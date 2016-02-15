@@ -3,9 +3,9 @@ import {pool, constant} from 'kefir';
 
 export function streamComponent(Component, events = []) {
 	const __eventPool = new pool();
-	const plugEvent = (e) => __eventPool.plug(constant(e));
-
 	const eventEmitters = {};
+	
+	const plugEvent = (e) => __eventPool.plug(constant(e));
 
 	function StreamableComponent(props) {
 		const map = props.map || function (o) { return o; };
