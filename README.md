@@ -27,6 +27,12 @@ Because Functional Reactive Programming is pretty cool, and so is React. However
 
 There are also plenty of libraries for connecting streams to React, but very few (none that I've found) that transition React events to streams, enabling a fully functional reactive architecture.
 
+## Dependencies
+
+At the moment, `react-streamable` depends directly on [Kefir](https://rpominov.github.io/kefir/) for streams. There is no reason for this. The library could easibly be ported to RxJS/Bacon.js/Fairmont/whatever. Under the hood, it uses Kefir's `pool` object (basically an equivalent to RxJS' `Subject`, or Bacon's `Bus`) to abstract the events into streams; we really never escape the bus, we just hide it. I'm interested in trying to create a portable version that can work with any reactive programming library.
+
+## Examples
+
 ### A slightly more complex example
 
 ```javascript
