@@ -124,3 +124,8 @@ const widgetStream =
 	});
 ```
 
+## License
+
+MIT
+
+
