@@ -28,25 +28,56 @@ import React, {Component} from 'react';
 import {render} from 'react-dom';
 import {streamComponent, getStream} from 'react-streamable';
 
-const StreamableButton = streamComponent('button', ['onClick']);
+const StreamableInput = streamComponent('input', ['onChange']);
 
 class MyApp extends Component {
 	render() {
 		return (
 			<div>
-				Counter: {this.props.count}
-				<StreamableButton> +1</StreamableButton>
+				<div>Hello {this.props.name}!</div>
+				<StreamableInput type="text" />
 			</div>
 		);
 	}
 }
 
 const countStream =
-	getStream(StreamableButton)
-	.scan((prevCount) => prevCount + 1)
-	.onValue((count) => 
-		render(<MyApp count={count} />, document.getElementById('my-app'))
+	getStream(StreamableInput)
+	/* The streams values contain two properties:
+		'event': The name of the event that was triggered, e.g. 'onChange'
+		'e': The React SyntheticEvent
+	*/
+	.map(({event, e}) => e.target.value)
+	.onValue((name) => 
+		render(<MyApp name={name} />, document.getElementById('my-app'))
 	);
 
 ```
 
+### You can stream any component
+...as long as you pass event handlers to the appropriate elements. The library simply passes special handlers to React's event system (on<Event>) to abstract them into one stream.
+
+In general, you are encouraged to create streams out of basic components and merge them, rather than manually pass the event handlers yourself:
+
+```javascript
+function MyWidget(props) {
+	return (
+		<div>
+			<button onClick={props.onClick}>Click me!</button>
+			<input onChange={props.onChange} defaultValue="Change me!" />
+		</div>
+	);
+}
+
+const StreamableWidget = streamComponent(MyWidget, ['onClick', 'onChange']);
+const widgetStream = 
+	getStream(StreamableWidget)
+	.onValue(({event, e}) => {
+		if (event === 'onClick') {
+			console.log('clicked');
+		}
+		else if (event === 'onChange') {
+			console.log('changed: '+e.target.value);
+		}
+	});
+```
