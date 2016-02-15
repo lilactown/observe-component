@@ -80,7 +80,7 @@ const widgetStream =
 	});
 ```
 
-However, you are *strongly* encouraged to create streams out of basic components and merge them, rather than manually pass the event handlers yourself. 
+However, you are **strongly** encouraged to create streams out of basic components and merge them, rather than manually pass the event handlers yourself. 
 
 ```javascript
 import {merge} from 'kefir';
