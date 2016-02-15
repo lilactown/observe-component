@@ -57,8 +57,6 @@ const countStream =
 ### You can stream any component
 ...as long as you pass event handlers to the appropriate elements. The library simply passes special handlers to React's event system (`on<Event>`) to abstract them into one stream.
 
-In general, you are encouraged to create streams out of basic components and merge them, rather than manually pass the event handlers yourself:
-
 ```javascript
 function MyWidget(props) {
 	return (
@@ -81,3 +79,36 @@ const widgetStream =
 		}
 	});
 ```
+
+However, you are *strongly* encouraged to create streams out of basic components and merge them, rather than manually pass the event handlers yourself. 
+
+```javascript
+import {merge} from 'kefir';
+
+const StreamableButton = streamComponent('button', ['onClick']);
+const StreamableInput = streamComponent('input', ['onChange']);
+
+function MyWidget(props) {
+	return (
+		<div>
+			<StreamableButton>Click me!</StreamableButton>
+			<StreamableInput defaultValue="Change me!" />
+		</div>
+	);
+}
+
+const widgetStream = 
+	merge([
+		fromComponent(StreamableButton),
+		fromComponent(StreamableInput),
+	])
+	.onValue(({event, e}) => {
+		if (event === 'onClick') {
+			console.log('clicked');
+		}
+		else if (event === 'onChange') {
+			console.log('changed: '+e.target.value);
+		}
+	});
+```
+
