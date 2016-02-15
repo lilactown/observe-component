@@ -24,6 +24,6 @@ export function streamComponent(Component, events = []) {
 	return StreamableComponent;
 }
 
-export function getStream(StreamableComponent) {
+export function fromComponent(StreamableComponent) {
 	return StreamableComponent.__eventStream;
 }

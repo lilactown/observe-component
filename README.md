@@ -3,7 +3,7 @@
 ```javascript
 import React from 'react';
 import {render} from 'react-dom';
-import {streamComponent, getStream} from 'react-streamable';
+import {streamComponent, fromComponent} from 'react-streamable';
 
 const StreamableButton = streamComponent('button', ['onClick']);
 
@@ -14,7 +14,7 @@ function MyButton(props) {
 render(<MyButton />, Document.getElementById('my-app'));
 
 const clickStream =
-	getStream(StreamableButton)
+	fromComponent(StreamableButton)
 	.onValue(() => {
 		console.log('world!');
 	});
@@ -26,7 +26,7 @@ const clickStream =
 ```javascript
 import React, {Component} from 'react';
 import {render} from 'react-dom';
-import {streamComponent, getStream} from 'react-streamable';
+import {streamComponent, fromComponent} from 'react-streamable';
 
 const StreamableInput = streamComponent('input', ['onChange']);
 
@@ -42,7 +42,7 @@ class MyApp extends Component {
 }
 
 const countStream =
-	getStream(StreamableInput)
+	fromComponent(StreamableInput)
 	/* The streams values contain two properties:
 		'event': The name of the event that was triggered, e.g. 'onChange'
 		'e': The React SyntheticEvent
@@ -71,7 +71,7 @@ function MyWidget(props) {
 
 const StreamableWidget = streamComponent(MyWidget, ['onClick', 'onChange']);
 const widgetStream = 
-	getStream(StreamableWidget)
+	fromComponent(StreamableWidget)
 	.onValue(({event, e}) => {
 		if (event === 'onClick') {
 			console.log('clicked');
