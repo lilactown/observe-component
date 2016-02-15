@@ -55,7 +55,7 @@ const countStream =
 ```
 
 ### You can stream any component
-...as long as you pass event handlers to the appropriate elements. The library simply passes special handlers to React's event system (on<Event>) to abstract them into one stream.
+...as long as you pass event handlers to the appropriate elements. The library simply passes special handlers to React's event system (`on<Event>`) to abstract them into one stream.
 
 In general, you are encouraged to create streams out of basic components and merge them, rather than manually pass the event handlers yourself:
 
