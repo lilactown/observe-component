@@ -13,13 +13,15 @@ function MyButton(props) {
 
 render(<MyButton />, Document.getElementById('my-app'));
 
-const clickStream = getStream(StreamableButton).onValue(() => {
-	console.log('world!');
-});
+const clickStream =
+	getStream(StreamableButton)
+	.onValue(() => {
+		console.log('world!');
+	});
 
 ```
 
-## A slightly more complex example
+### A slightly more complex example
 
 ```javascript
 import React, {Component} from 'react';
@@ -39,10 +41,12 @@ class MyApp extends Component {
 	}
 }
 
-const countStream = getStream(StreamableButton)
+const countStream =
+	getStream(StreamableButton)
 	.scan((prevCount) => prevCount + 1)
 	.onValue((count) => 
 		render(<MyApp count={count} />, document.getElementById('my-app'))
 	);
 
 ```
+
