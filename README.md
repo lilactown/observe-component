@@ -41,7 +41,7 @@ class MyApp extends Component {
 	}
 }
 
-const countStream =
+const nameStream =
 	fromComponent(StreamableInput)
 	/* The streams values contain two properties:
 		'event': The name of the event that was triggered, e.g. 'onChange'
