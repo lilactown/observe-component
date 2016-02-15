@@ -21,6 +21,12 @@ const clickStream =
 
 ```
 
+## But why?
+
+Because Functional Reactive Programming is pretty cool, and so is React. However, React's API is not very FRP-friendly; the necessity to use event buses (or subjects, in RxJS-speak) can lead us to the [Bus of Doom](https://gist.github.com/jonifreeman/5131428a9f04b69a76ae), and in general is finnicky and boilerplate-y to connect an observer to React.
+
+There are also plenty of libraries for connecting streams to React, but very few (none that I've found) that transition React events to streams, enabling a fully functional reactive architecture.
+
 ### A slightly more complex example
 
 ```javascript
