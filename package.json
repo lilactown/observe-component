@@ -2,7 +2,7 @@
   "name": "react-streamable",
   "version": "0.0.1",
   "description": "A small library for accessing React component events as functional reactive streams",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "mocha --compilers js:babel-register",
     "build": "babel src -d lib"
