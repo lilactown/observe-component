@@ -23,41 +23,27 @@ const clickStream =
 
 ## API
 
-### `streamComponent(Component, events[])`
+#### `streamComponent(Component, events[])`
 Returns a higher-order `StreamableComponent` with an attached stream of the specified events. Supports all events supported by React's event system.
 
 Example:
 ```javascript
-// native component
 const StreamingDiv =
 	streamComponent('div', ['onMouseDown', 'onMouseUp']);
-
-// ReactClass component
-class MyComponent extends Component {
-	render() {
-		return (<input onChange={this.props.onChange} />);
-	}
-}
-
-// Or, more simply:
-function MyComponent(props) {
-	return (<input {...props} />);
-}
-
-const StreamingMyComponent =
-	streamComponent(MyComponent, ['onChange']);
 ```
 
-### `fromComponent(StreamableComponent, [ events[] ])`
+#### `fromComponent(StreamableComponent, [ events[] ])`
 Returns the stream attached to the `StreamableComponent`. An optional array of `events` can be supplied to return a stream only containing those events.
 
 Example:
 ```javascript
 const StreamingDiv = streamComponent('div', ['onMouseDown', 'onMouseUp']);
 
-fromComponent(StreamingDiv).log() // will log all 'onMouseDown' and 'onMouseUp' events
+// will log all 'onMouseDown' and 'onMouseUp' events
+fromComponent(StreamingDiv).log()
 
-fromComponent(StreamingDiv, ['onMouseUp']).log() // will only log 'onMouseUp' events
+// will only log 'onMouseUp' events
+fromComponent(StreamingDiv, ['onMouseUp']).log();
 ```
 
 
