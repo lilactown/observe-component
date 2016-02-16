@@ -38,13 +38,13 @@ describe('streamComponent', function () {
 	});
 });
 
-describe('getStream', function () {
-	const getStream = require('../src').getStream;
+describe('fromComponent', function () {
+	const fromComponent = require('../src').fromComponent;
 	it('should return the __eventStream property set on an object', function () {
 		const obj = {
 			__eventStream: true
 		};
 
-		assert.strictEqual(getStream(obj), true, "__eventStream property");
+		assert.strictEqual(fromComponent(obj), true, "__eventStream property");
 	});
 });
