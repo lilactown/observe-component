@@ -21,6 +21,46 @@ const clickStream =
 
 ```
 
+## API
+
+### `streamComponent(Component, events[])`
+Returns a higher-order `StreamableComponent` with an attached stream of the specified events. Supports all events supported by React's event system.
+
+Example:
+```javascript
+// native component
+const StreamingDiv =
+	streamComponent('div', ['onMouseDown', 'onMouseUp']);
+
+// ReactClass component
+class MyComponent extends Component {
+	render() {
+		return (<input onChange={this.props.onChange} />);
+	}
+}
+
+// Or, more simply:
+function MyComponent(props) {
+	return (<input {...props} />);
+}
+
+const StreamingMyComponent =
+	streamComponent(MyComponent, ['onChange']);
+```
+
+### `fromComponent(StreamableComponent, [ events[] ])`
+Returns the stream attached to the `StreamableComponent`. An optional array of `events` can be supplied to return a stream only containing those events.
+
+Example:
+```javascript
+const StreamingDiv = streamComponent('div', ['onMouseDown', 'onMouseUp']);
+
+fromComponent(StreamingDiv).log() // will log all 'onMouseDown' and 'onMouseUp' events
+
+fromComponent(StreamingDiv, ['onMouseUp']).log() // will only log 'onMouseUp' events
+```
+
+
 ## But why?
 
 Because Functional Reactive Programming is pretty cool, and so is React. However, React's API is not very FRP-friendly; the necessity to wire up events by hand using buses (or subjects, in RxJS-speak) easily leads us to the [Bus of Doom](https://gist.github.com/jonifreeman/5131428a9f04b69a76ae), and in general is finnicky and boilerplate-y to connect an observer to React.
@@ -31,7 +71,7 @@ There are also plenty of libraries for connecting streams to React, but very few
 
 At the moment, `react-streamable` depends directly on [Kefir](https://rpominov.github.io/kefir/) for streams. There is no reason for this. The library could easibly be ported to RxJS/Bacon.js/Fairmont/whatever. Under the hood, it uses Kefir's `pool` object (basically an equivalent to RxJS' `Subject`, or Bacon's `Bus`) to abstract the events into streams; we really never escape the bus, we just hide it. I'm interested in trying to create a portable version that can work with any reactive programming library.
 
-## Examples
+## More examples
 
 ### A slightly more complex example
 
