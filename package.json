@@ -1,6 +1,6 @@
 {
   "name": "react-streamable",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A small library for accessing React component events as functional reactive streams",
   "main": "lib/index.js",
   "scripts": {
