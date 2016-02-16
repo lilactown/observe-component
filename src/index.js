@@ -24,6 +24,11 @@ export function streamComponent(Component, events = []) {
 	return StreamableComponent;
 }
 
-export function fromComponent(StreamableComponent) {
+export function fromComponent(StreamableComponent, filters) {
+	if (filters && filters.length) {
+		return StreamableComponent
+			.__eventStream
+			.filter(({event}) => filters.indexOf(event) > -1)
+	}
 	return StreamableComponent.__eventStream;
 }

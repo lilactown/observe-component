@@ -1,6 +1,7 @@
 import React from 'react';
 import {createRenderer} from 'react-addons-test-utils';
 import assert from 'assert';
+import K from 'kefir';
 
 describe('streamComponent', function () {
 	const streamComponent = require('../src').streamComponent;
@@ -46,5 +47,23 @@ describe('fromComponent', function () {
 		};
 
 		assert.strictEqual(fromComponent(obj), true, "__eventStream property");
+	});
+
+	it('if an array is supplied to the second argument, filter event names by members of array', function () {
+		const __eventStream = K.stream((emitter) => {
+			emitter.emit({event: 'onEvent1'});
+			emitter.emit({event: 'onEvent2'});
+			emitter.emit({event: 'onEvent2'});
+			emitter.end();
+		});
+		const obj = { __eventStream };
+
+		const event2 = fromComponent(obj, ['onEvent2']);
+		let count = 0;
+		event2.onValue(({event}) => {
+			assert.strictEqual(event, 'onEvent2', "is onEvent2");
+			count++;
+		});
+		assert.strictEqual(count, 2, "gets called twice");
 	});
 });
