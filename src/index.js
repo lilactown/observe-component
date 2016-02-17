@@ -5,14 +5,14 @@ export function streamComponent(Component, events = []) {
 	const __eventPool = new pool();
 	const eventEmitters = {};
 	
-	const plugEvent = (e) => __eventPool.plug(constant(e));
+	const plugEvent = (event) => __eventPool.plug(constant(event));
 
 	function StreamableComponent(props) {
 		const map = props.map || function (o) { return o; };
-		events.forEach((event) => {
-			eventEmitters[event] = (e) => {
-				props[event] && props[event](e);
-				plugEvent(map({ event, e }));
+		events.forEach((type) => {
+			eventEmitters[type] = (event) => {
+				props[type] && props[type](event);
+				plugEvent(map({ type, event }));
 			}
 		});
 
@@ -28,7 +28,7 @@ export function fromComponent(StreamableComponent, filters) {
 	if (filters && filters.length) {
 		return StreamableComponent
 			.__eventStream
-			.filter(({event}) => filters.indexOf(event) > -1)
+			.filter(({type}) => filters.indexOf(type) > -1)
 	}
 	return StreamableComponent.__eventStream;
 }

@@ -21,6 +21,12 @@ const clickStream =
 
 ```
 
+## Installation
+
+```bash
+npm install --save react-streamable kefir react
+```
+
 ## API
 
 #### `streamComponent(Component, events[])`
@@ -28,8 +34,7 @@ Returns a higher-order `StreamableComponent` with an attached stream of the spec
 
 Example:
 ```javascript
-const StreamingDiv =
-	streamComponent('div', ['onMouseDown', 'onMouseUp']);
+const StreamingDiv = streamComponent('div', ['onMouseDown', 'onMouseUp']);
 ```
 
 #### `fromComponent(StreamableComponent, [ events[] ])`
@@ -82,10 +87,10 @@ class MyApp extends Component {
 const nameStream =
 	fromComponent(StreamableInput)
 	/* The streams values contain two properties:
-		'event': The name of the event that was triggered, e.g. 'onChange'
-		'e': The React SyntheticEvent
+		'type': The type of the event that was triggered, e.g. 'onChange'
+		'event': The React library <SyntheticEvent>
 	*/
-	.map(({event, e}) => e.target.value)
+	.map(({type, event}) => event.target.value)
 	.onValue((name) => 
 		render(<MyApp name={name} />, document.getElementById('my-app'))
 	);
@@ -108,12 +113,12 @@ function MyWidget(props) {
 const StreamableWidget = streamComponent(MyWidget, ['onClick', 'onChange']);
 const widgetStream = 
 	fromComponent(StreamableWidget)
-	.onValue(({event, e}) => {
-		if (event === 'onClick') {
+	.onValue(({type, event}) => {
+		if (type === 'onClick') {
 			console.log('clicked');
 		}
-		else if (event === 'onChange') {
-			console.log('changed: '+e.target.value);
+		else if (type === 'onChange') {
+			console.log('changed: '+event.target.value);
 		}
 	});
 ```
@@ -140,12 +145,12 @@ const widgetStream =
 		fromComponent(StreamableButton),
 		fromComponent(StreamableInput),
 	])
-	.onValue(({event, e}) => {
-		if (event === 'onClick') {
+	.onValue(({type, event}) => {
+		if (type === 'onClick') {
 			console.log('clicked');
 		}
-		else if (event === 'onChange') {
-			console.log('changed: '+e.target.value);
+		else if (type === 'onChange') {
+			console.log('changed: '+event.target.value);
 		}
 	});
 ```
