@@ -24,16 +24,16 @@ export function observeComponent(Component, events = []) {
 		return (<Component {...props} {...eventHandlers} />);
 	};
 	
-	StreamableComponent.__eventStream = __eventPool.map((v) => v); // return Observable
+	ObservableComponent.__eventStream = __eventPool.map((v) => v); // return Observable
 
-	return StreamableComponent;
+	return ObservableComponent;
 }
 
-export function fromComponent(StreamableComponent, filters) {
+export function fromComponent(ObservableComponent, filters) {
 	if (filters && filters.length) {
-		return StreamableComponent
+		return ObservableComponent
 			.__eventStream
 			.filter(({type}) => filters.indexOf(type) > -1)
 	}
-	return StreamableComponent.__eventStream;
+	return ObservableComponent.__eventStream;
 }

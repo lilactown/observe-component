@@ -3,9 +3,9 @@
 ```javascript
 import React from 'react';
 import {render} from 'react-dom';
-import {observableComponent, fromComponent} from 'react-streamable';
+import {observeComponent, fromComponent} from 'react-streamable';
 
-const StreamingButton = observableComponent('button', ['onClick']);
+const StreamingButton = observeComponent('button', ['onClick']);
 
 function MyButton(props) {
 	return (<StreamingButton>Hello</StreamingButton>);
@@ -36,22 +36,22 @@ npm install --save react
 
 ## API
 
-#### `observableComponent(Component, events[])`
-Returns a higher-order `ObservableComponent` with an attached stream of the specified events. Supports all events supported by React's event system.
+#### `observeComponent(Component, events[])`
+Returns a higher-order `observeComponent` with an attached stream of the specified events. Supports all events supported by React's event system.
 
 Example:
 ```javascript
-const StreamingDiv = observableComponent('div', ['onMouseDown', 'onMouseUp']);
+const StreamingDiv = observeComponent('div', ['onMouseDown', 'onMouseUp']);
 ```
 
-#### `fromComponent(ObservableComponent, [ events[] ])`
+#### `fromComponent(observeComponent, [ events[] ])`
 Returns the stream attached to the `StreamableComponent`. An optional array of `events` can be supplied to return a stream only containing those events.
 
 fromComponent streams emit a `ComponentEvent` object.
 
 Example:
 ```javascript
-const StreamingDiv = observableComponent('div', ['onMouseDown', 'onMouseUp']);
+const StreamingDiv = observeComponent('div', ['onMouseDown', 'onMouseUp']);
 
 // will log all 'onMouseDown' and 'onMouseUp' events
 fromComponent(StreamingDiv).log()
@@ -83,9 +83,9 @@ At the moment, `react-streamable` depends directly on [Kefir](https://rpominov.g
 ```javascript
 import React, {Component} from 'react';
 import {render} from 'react-dom';
-import {observableComponent, fromComponent} from 'react-streamable';
+import {observeComponent, fromComponent} from 'react-streamable';
 
-const StreamingInput = observableComponent('input', ['onChange']);
+const StreamingInput = observeComponent('input', ['onChange']);
 
 function MyApp(props) {
 	return (
@@ -124,7 +124,7 @@ class MyWidget extends React.Component {
 	}
 }
 
-const StreamingWidget = observableComponent(MyWidget, ['onClick', 'onChange']);
+const StreamingWidget = observeComponent(MyWidget, ['onClick', 'onChange']);
 const widgetStream = 
 	fromComponent(StreamingWidget)
 	.onValue(({type, event}) => {
@@ -145,8 +145,8 @@ Also, if we can get away with it, we'd always like to use stateless functions as
 import {merge} from 'kefir';
 
 // Create streamable button and streamable inputs
-const StreamingButton = observableComponent('button', ['onClick']);
-const StreamingInput = observableComponent('input', ['onChange']);
+const StreamingButton = observeComponent('button', ['onClick']);
+const StreamingInput = observeComponent('input', ['onChange']);
 
 // Component is simply a function from props to view
 function MyWidget(props) {

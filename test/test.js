@@ -3,12 +3,12 @@ import {createRenderer} from 'react-addons-test-utils';
 import assert from 'assert';
 import K from 'kefir';
 
-describe('streamComponent', function () {
-	const streamComponent = require('../src').streamComponent;
+describe('observeComponent', function () {
+	const observeComponent = require('../src').observeComponent;
 	const shallowRenderer = createRenderer();
 
 	it('should return a valid React component', function () {
-		const Streamable = streamComponent('button', ['onClick']);
+		const Streamable = observeComponent('button', ['onClick']);
 		shallowRenderer.render(<Streamable />);
 		const result = shallowRenderer.getRenderOutput();
 
@@ -16,19 +16,19 @@ describe('streamComponent', function () {
 	});
 
 	it('should have an __eventStream property', function () {
-		const Streamable = streamComponent('button', ['onClick']);
+		const Streamable = observeComponent('button', ['onClick']);
 		assert.strictEqual(!!Streamable.__eventStream, true, "has __eventStream");
 	});
 
 	it('should have an onClick event handler', function () {
-		const Streamable = streamComponent('button', ['onClick']);
+		const Streamable = observeComponent('button', ['onClick']);
 		shallowRenderer.render(<Streamable />);
 		const result = shallowRenderer.getRenderOutput();
 		assert.strictEqual(!!result.props.onClick, true, "has onClick");
 	});
 
 	it('should emit a value on __eventStream when an event is triggered', function () {
-		const Streamable = streamComponent('button', ['onClick']);
+		const Streamable = observeComponent('button', ['onClick']);
 		shallowRenderer.render(<Streamable />);
 		const result = shallowRenderer.getRenderOutput();
 
