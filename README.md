@@ -47,6 +47,8 @@ const StreamingDiv = streamComponent('div', ['onMouseDown', 'onMouseUp']);
 #### `fromComponent(StreamableComponent, [ events[] ])`
 Returns the stream attached to the `StreamableComponent`. An optional array of `events` can be supplied to return a stream only containing those events.
 
+fromComponent streams emit a `StreamingComponentEvent` object.
+
 Example:
 ```javascript
 const StreamingDiv = streamComponent('div', ['onMouseDown', 'onMouseUp']);
@@ -58,6 +60,11 @@ fromComponent(StreamingDiv).log()
 fromComponent(StreamingDiv, ['onMouseUp']).log();
 ```
 
+#### `StreamingComponentEvent`
+
+The `StreamingComponentEvent` object contains two properties:
+- `type` : a string which identifies the event that has occurred, e.g.: 'onClick', 'onScroll'
+- `event` : the React library `SyntheticEvent` (see: [Event System](https://facebook.github.io/react/docs/events.html))
 
 ## But why?
 
