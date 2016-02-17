@@ -33,7 +33,7 @@ describe('streamComponent', function () {
 		const result = shallowRenderer.getRenderOutput();
 
 		Streamable.__eventStream.onValue((e) => 
-			assert.deepEqual(e, { event: 'onClick', e: 'test event' }, "onClick")
+			assert.deepEqual(e, { type: 'onClick', event: 'test event' }, "onClick")
 		);
 		result.props.onClick('test event');
 	});
@@ -51,17 +51,17 @@ describe('fromComponent', function () {
 
 	it('if an array is supplied to the second argument, filter event names by members of array', function () {
 		const __eventStream = K.stream((emitter) => {
-			emitter.emit({event: 'onEvent1'});
-			emitter.emit({event: 'onEvent2'});
-			emitter.emit({event: 'onEvent2'});
+			emitter.emit({type: 'onEvent1'});
+			emitter.emit({type: 'onEvent2'});
+			emitter.emit({type: 'onEvent2'});
 			emitter.end();
 		});
 		const obj = { __eventStream };
 
 		const event2 = fromComponent(obj, ['onEvent2']);
 		let count = 0;
-		event2.onValue(({event}) => {
-			assert.strictEqual(event, 'onEvent2', "is onEvent2");
+		event2.onValue(({type}) => {
+			assert.strictEqual(type, 'onEvent2', "is onEvent2");
 			count++;
 		});
 		assert.strictEqual(count, 2, "gets called twice");
