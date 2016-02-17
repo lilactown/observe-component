@@ -2,20 +2,19 @@ import React from 'react';
 import {pool, constant} from 'kefir';
 
 export function streamComponent(Component, events = []) {
-	const __eventPool = new pool();
-	const eventEmitters = {};
-	
+	const __eventPool = new pool();	
+	const eventHandlers = {};
 	const plugEvent = (event) => __eventPool.plug(constant(event));
 
 	function StreamableComponent(props) {
 		events.forEach((type) => {
-			eventEmitters[type] = (event) => {
+			eventHandlers[type] = (event) => {
 				props[type] && props[type](event);
 				plugEvent({ type, event });
 			}
 		});
 
-		return (<Component {...props} {...eventEmitters} />);
+		return (<Component {...props} {...eventHandlers} />);
 	};
 	
 	StreamableComponent.__eventStream = __eventPool.map((v) => v); // return Observable
