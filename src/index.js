@@ -1,6 +1,13 @@
 import React from 'react';
 import {pool, constant} from 'kefir';
 
+class ComponentEvent {
+	constructor(type, event) {
+		this.type = type;
+		this.event = event;
+	}
+}
+
 export function streamComponent(Component, events = []) {
 	const __eventPool = new pool();	
 	const eventHandlers = {};
@@ -10,7 +17,7 @@ export function streamComponent(Component, events = []) {
 		events.forEach((type) => {
 			eventHandlers[type] = (event) => {
 				props[type] && props[type](event);
-				plugEvent({ type, event });
+				plugEvent(new ComponentEvent(type, event));
 			}
 		});
 
