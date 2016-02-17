@@ -3,18 +3,18 @@
 ```javascript
 import React from 'react';
 import {render} from 'react-dom';
-import {streamComponent, fromComponent} from 'react-streamable';
+import {observableComponent, fromComponent} from 'react-streamable';
 
-const StreamableButton = streamComponent('button', ['onClick']);
+const StreamingButton = observableComponent('button', ['onClick']);
 
 function MyButton(props) {
-	return (<StreamableButton>Hello</StreamableButton>);
+	return (<StreamingButton>Hello</StreamingButton>);
 }
 
 render(<MyButton />, Document.getElementById('my-app'));
 
 const clickStream =
-	fromComponent(StreamableButton)
+	fromComponent(StreamingButton)
 	.onValue(() => {
 		console.log('world!');
 	});
@@ -36,22 +36,22 @@ npm install --save react
 
 ## API
 
-#### `streamComponent(Component, events[])`
-Returns a higher-order `StreamableComponent` with an attached stream of the specified events. Supports all events supported by React's event system.
+#### `observableComponent(Component, events[])`
+Returns a higher-order `ObservableComponent` with an attached stream of the specified events. Supports all events supported by React's event system.
 
 Example:
 ```javascript
-const StreamingDiv = streamComponent('div', ['onMouseDown', 'onMouseUp']);
+const StreamingDiv = observableComponent('div', ['onMouseDown', 'onMouseUp']);
 ```
 
-#### `fromComponent(StreamableComponent, [ events[] ])`
+#### `fromComponent(ObservableComponent, [ events[] ])`
 Returns the stream attached to the `StreamableComponent`. An optional array of `events` can be supplied to return a stream only containing those events.
 
 fromComponent streams emit a `ComponentEvent` object.
 
 Example:
 ```javascript
-const StreamingDiv = streamComponent('div', ['onMouseDown', 'onMouseUp']);
+const StreamingDiv = observableComponent('div', ['onMouseDown', 'onMouseUp']);
 
 // will log all 'onMouseDown' and 'onMouseUp' events
 fromComponent(StreamingDiv).log()
@@ -74,7 +74,7 @@ There are also plenty of libraries for connecting streams to React, but very few
 
 ## Dependencies
 
-At the moment, `react-streamable` depends directly on [Kefir](https://rpominov.github.io/kefir/) for streams. There is no reason for this. The library could easibly be ported to RxJS/Bacon.js/Fairmont/whatever. Under the hood, it uses Kefir's `pool` object (basically an equivalent to RxJS' `Subject`, or Bacon's `Bus`) to abstract the events into streams; we really never escape the bus, we just hide it. I'm interested in trying to create a portable version that can work with any reactive programming library.
+At the moment, `react-streamable` depends directly on [Kefir](https://rpominov.github.io/kefir/) for reactive streams. There is no reason for this. The library could easibly be ported to RxJS/Bacon.js/Fairmont/whatever. Under the hood, it uses Kefir's `pool` object (basically an equivalent to RxJS' `Subject`, or Bacon's `Bus`) to abstract the events into streams; we really never escape the bus, we just hide it. I'm interested in trying to create a portable version that can work with any reactive programming library.
 
 ## Examples
 
@@ -83,21 +83,21 @@ At the moment, `react-streamable` depends directly on [Kefir](https://rpominov.g
 ```javascript
 import React, {Component} from 'react';
 import {render} from 'react-dom';
-import {streamComponent, fromComponent} from 'react-streamable';
+import {observableComponent, fromComponent} from 'react-streamable';
 
-const StreamableInput = streamComponent('input', ['onChange']);
+const StreamingInput = observableComponent('input', ['onChange']);
 
 function MyApp(props) {
 	return (
 		<div>
 			<div>Hello {this.props.name}!</div>
-			<StreamableInput type="text" />
+			<StreamingInput type="text" />
 		</div>
 	);
 }
 
 const nameStream =
-	fromComponent(StreamableInput)
+	fromComponent(StreamingInput)
 	/* The streams values contain two properties:
 		'type': The type of the event that was triggered, e.g. 'onChange'
 		'event': The React library `SyntheticEvent`
@@ -124,9 +124,9 @@ class MyWidget extends React.Component {
 	}
 }
 
-const StreamableWidget = streamComponent(MyWidget, ['onClick', 'onChange']);
+const StreamingWidget = observableComponent(MyWidget, ['onClick', 'onChange']);
 const widgetStream = 
-	fromComponent(StreamableWidget)
+	fromComponent(StreamingWidget)
 	.onValue(({type, event}) => {
 		if (type === 'onClick') {
 			console.log('clicked');
@@ -145,15 +145,15 @@ Also, if we can get away with it, we'd always like to use stateless functions as
 import {merge} from 'kefir';
 
 // Create streamable button and streamable inputs
-const StreamableButton = streamComponent('button', ['onClick']);
-const StreamableInput = streamComponent('input', ['onChange']);
+const StreamingButton = observableComponent('button', ['onClick']);
+const StreamingInput = observableComponent('input', ['onChange']);
 
 // Component is simply a function from props to view
 function MyWidget(props) {
 	return (
 		<div>
-			<StreamableButton>Click me!</StreamableButton>
-			<StreamableInput defaultValue="Change me!" />
+			<StreamingButton>Click me!</StreamingButton>
+			<StreamingInput defaultValue="Change me!" />
 		</div>
 	);
 }
@@ -161,8 +161,8 @@ function MyWidget(props) {
 // We construct our application from the two streams
 const widgetStream = 
 	merge([
-		fromComponent(StreamableButton),
-		fromComponent(StreamableInput),
+		fromComponent(StreamingButton),
+		fromComponent(StreamingInput),
 	])
 	.onValue(({type, event}) => {
 		if (type === 'onClick') {

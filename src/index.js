@@ -8,12 +8,12 @@ class ComponentEvent {
 	}
 }
 
-export function streamComponent(Component, events = []) {
+export function observeComponent(Component, events = []) {
 	const __eventPool = new pool();	
 	const eventHandlers = {};
 	const plugEvent = (event) => __eventPool.plug(constant(event));
 
-	function StreamableComponent(props) {
+	function ObservableComponent(props) {
 		events.forEach((type) => {
 			eventHandlers[type] = (event) => {
 				props[type] && props[type](event);
