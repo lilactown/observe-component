@@ -24,7 +24,14 @@ const clickStream =
 ## Installation
 
 ```bash
-npm install --save react-streamable kefir react
+npm install --save react-streamable
+```
+
+You will also need to install [Kefir](https://github.com/rpominov/kefir) and [React](https://github.com/facebook/react) if they're not already a part of your project:
+
+```bash
+npm install --save kefir
+npm install --save react
 ```
 
 ## API
