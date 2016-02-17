@@ -8,11 +8,10 @@ export function streamComponent(Component, events = []) {
 	const plugEvent = (event) => __eventPool.plug(constant(event));
 
 	function StreamableComponent(props) {
-		const map = props.map || function (o) { return o; };
 		events.forEach((type) => {
 			eventEmitters[type] = (event) => {
 				props[type] && props[type](event);
-				plugEvent(map({ type, event }));
+				plugEvent({ type, event });
 			}
 		});
 
