@@ -87,15 +87,13 @@ import {streamComponent, fromComponent} from 'react-streamable';
 
 const StreamableInput = streamComponent('input', ['onChange']);
 
-class MyApp extends Component {
-	render() {
-		return (
-			<div>
-				<div>Hello {this.props.name}!</div>
-				<StreamableInput type="text" />
-			</div>
-		);
-	}
+function MyApp(props) {
+	return (
+		<div>
+			<div>Hello {this.props.name}!</div>
+			<StreamableInput type="text" />
+		</div>
+	);
 }
 
 const nameStream =
@@ -115,13 +113,15 @@ const nameStream =
 ...as long as you pass event handlers to the appropriate elements. The library simply passes special handlers to React's event system (`on<Event>`) to abstract them into streams.
 
 ```javascript
-function MyWidget(props) {
-	return (
-		<div>
-			<button onClick={props.onClick}>Click me!</button>
-			<input onChange={props.onChange} defaultValue="Change me!" />
-		</div>
-	);
+class MyWidget extends React.Component {
+	render() {
+		return (
+			<div>
+				<button onClick={this.props.onClick}>Click me!</button>
+				<input onChange={this.props.onChange} defaultValue="Change me!" />
+			</div>
+		);
+	}
 }
 
 const StreamableWidget = streamComponent(MyWidget, ['onClick', 'onChange']);
@@ -137,14 +137,18 @@ const widgetStream =
 	});
 ```
 
-However, you are **strongly** encouraged to create streams out of basic components and merge them, rather than manually pass the event handlers yourself. 
+However, you are **strongly** encouraged to create streams out of basic components and merge them, rather than manually pass the event handlers yourself.
+
+Also, if we can get away with it, we'd always like to use stateless functions as components. :)
 
 ```javascript
 import {merge} from 'kefir';
 
+// Create streamable button and streamable inputs
 const StreamableButton = streamComponent('button', ['onClick']);
 const StreamableInput = streamComponent('input', ['onChange']);
 
+// Component is simply a function from props to view
 function MyWidget(props) {
 	return (
 		<div>
@@ -154,6 +158,7 @@ function MyWidget(props) {
 	);
 }
 
+// We construct our application from the two streams
 const widgetStream = 
 	merge([
 		fromComponent(StreamableButton),
