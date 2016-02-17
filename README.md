@@ -76,9 +76,9 @@ There are also plenty of libraries for connecting streams to React, but very few
 
 At the moment, `react-streamable` depends directly on [Kefir](https://rpominov.github.io/kefir/) for streams. There is no reason for this. The library could easibly be ported to RxJS/Bacon.js/Fairmont/whatever. Under the hood, it uses Kefir's `pool` object (basically an equivalent to RxJS' `Subject`, or Bacon's `Bus`) to abstract the events into streams; we really never escape the bus, we just hide it. I'm interested in trying to create a portable version that can work with any reactive programming library.
 
-## More examples
+## Examples
 
-### A slightly more complex example
+### Components as stateless functions
 
 ```javascript
 import React, {Component} from 'react';
@@ -102,7 +102,7 @@ const nameStream =
 	fromComponent(StreamableInput)
 	/* The streams values contain two properties:
 		'type': The type of the event that was triggered, e.g. 'onChange'
-		'event': The React library <SyntheticEvent>
+		'event': The React library `SyntheticEvent`
 	*/
 	.map(({type, event}) => event.target.value)
 	.onValue((name) => 
@@ -111,8 +111,8 @@ const nameStream =
 
 ```
 
-### You can stream any component
-...as long as you pass event handlers to the appropriate elements. The library simply passes special handlers to React's event system (`on<Event>`) to abstract them into one stream.
+### You can stream any kind of component
+...as long as you pass event handlers to the appropriate elements. The library simply passes special handlers to React's event system (`on<Event>`) to abstract them into streams.
 
 ```javascript
 function MyWidget(props) {
@@ -168,6 +168,8 @@ const widgetStream =
 		}
 	});
 ```
+
+
 
 ## License
 
