@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Lokeh/react-streamable.git"
+    "url": "git+https://github.com/Lokeh/observe-component.git"
   },
   "keywords": [
     "React",
@@ -26,9 +26,9 @@
   "author": "Will Acton",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Lokeh/react-streamable/issues"
+    "url": "https://github.com/Lokeh/observe-component/issues"
   },
-  "homepage": "https://github.com/Lokeh/react-streamable#readme",
+  "homepage": "https://github.com/Lokeh/observe-component#readme",
   "peerDependencies": {
     "kefir": "^3.2.0",
     "react": "^0.14.7"

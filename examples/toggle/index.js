@@ -1,6 +1,6 @@
 import React from 'react';
 import {render} from 'react-dom';
-import {streamComponent, fromComponent} from 'react-streamable';
+import {streamComponent, fromComponent} from 'observe-component';
 
 const Button = streamComponent('button', ['onClick']);
 const clickStream = fromComponent(Button);

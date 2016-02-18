@@ -1,9 +1,9 @@
-# react-streamable
+# observe-component
 
 ```javascript
 import React from 'react';
 import {render} from 'react-dom';
-import {observeComponent, fromComponent} from 'react-streamable';
+import {observeComponent, fromComponent} from 'observe-component';
 
 const StreamingButton = observeComponent('button', ['onClick']);
 
@@ -24,7 +24,7 @@ const clickStream =
 ## Installation
 
 ```bash
-npm install --save react-streamable
+npm install --save observe-component
 ```
 
 You will also need to install [Kefir](https://github.com/rpominov/kefir) and [React](https://github.com/facebook/react) if they're not already a part of your project:
@@ -74,7 +74,7 @@ There are also plenty of libraries for connecting streams to React, but very few
 
 ## Dependencies
 
-At the moment, `react-streamable` depends directly on [Kefir](https://rpominov.github.io/kefir/) for reactive streams. There is no reason for this. The library could easibly be ported to RxJS/Bacon.js/Fairmont/whatever. Under the hood, it uses Kefir's `pool` object (basically an equivalent to RxJS' `Subject`, or Bacon's `Bus`) to abstract the events into streams; we really never escape the bus, we just hide it. I'm interested in trying to create a portable version that can work with any reactive programming library.
+At the moment, `observe-component` depends directly on [Kefir](https://rpominov.github.io/kefir/) for reactive streams. There is no reason for this. The library could easibly be ported to RxJS/Bacon.js/Fairmont/whatever. Under the hood, it uses Kefir's `pool` object (basically an equivalent to RxJS' `Subject`, or Bacon's `Bus`) to abstract the events into streams; we really never escape the bus, we just hide it. I'm interested in trying to create a portable version that can work with any reactive programming library.
 
 ## Examples
 
@@ -83,7 +83,7 @@ At the moment, `react-streamable` depends directly on [Kefir](https://rpominov.g
 ```javascript
 import React, {Component} from 'react';
 import {render} from 'react-dom';
-import {observeComponent, fromComponent} from 'react-streamable';
+import {observeComponent, fromComponent} from 'observe-component';
 
 const StreamingInput = observeComponent('input', ['onChange']);
 
