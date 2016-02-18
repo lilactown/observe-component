@@ -45,7 +45,7 @@ const StreamingDiv = observeComponent('div', ['onMouseDown', 'onMouseUp']);
 ```
 
 #### `fromComponent(observeComponent, [ events[] ])`
-Returns the stream attached to the `StreamableComponent`. An optional array of `events` can be supplied to return a stream only containing those events.
+Returns the stream attached to the `ObservableComponent`. An optional array of `events` can be supplied to return a stream only containing those events.
 
 fromComponent streams emit a `ComponentEvent` object.
 
@@ -144,7 +144,7 @@ Also, if we can get away with it, we'd always like to use stateless functions as
 ```javascript
 import {merge} from 'kefir';
 
-// Create streamable button and streamable inputs
+// Create Observable button and Observable inputs
 const StreamingButton = observeComponent('button', ['onClick']);
 const StreamingInput = observeComponent('input', ['onChange']);
 
