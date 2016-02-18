@@ -37,7 +37,7 @@ npm install --save react
 ## API
 
 #### `observeComponent(Component, events[])`
-Returns a higher-order `observeComponent` with an attached stream of the specified events. Supports all events supported by React's event system.
+Returns a higher-order `ObservableComponent` with an attached stream of the specified events. Supports all events supported by React's event system.
 
 Example:
 ```javascript
