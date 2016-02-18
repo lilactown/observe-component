@@ -1,5 +1,5 @@
 {
-  "name": "react-streamable",
+  "name": "observe-component",
   "version": "0.1.1",
   "description": "A small library for accessing React component events as functional reactive streams",
   "main": "lib/index.js",
@@ -17,7 +17,8 @@
     "component",
     "stream",
     "reactive",
-    "streamable",
+    "observable",
+    "observe",
     "functional",
     "FRP",
     "rx"
