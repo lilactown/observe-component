@@ -1,6 +1,6 @@
 {
   "name": "observe-component",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A small library for accessing React component events as functional reactive streams",
   "main": "lib/index.js",
   "scripts": {
