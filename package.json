@@ -2,10 +2,10 @@
   "name": "observe-component",
   "version": "1.0.1",
   "description": "A small library for accessing React component events as functional reactive streams",
-  "main": "lib/index.js",
+  "main": "index.js",
   "scripts": {
     "test": "mocha --compilers js:babel-register",
-    "build": "babel src -d lib"
+    "build": "babel src -d ./"
   },
   "repository": {
     "type": "git",
