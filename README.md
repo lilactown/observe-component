@@ -29,11 +29,6 @@ npm install --save observe-component
 
 You will also need to install your choice of [Kefir](https://github.com/rpominov/kefir) or [RxJS](https://github.com/Reactive-Extensions/RxJS), and [React](https://github.com/facebook/react) if they're not already a part of your project:
 
-```bash
-npm install --save kefir
-npm install --save react
-```
-
 ## API
 
 #### `observeComponent(Component, events[])`
