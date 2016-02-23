@@ -31,7 +31,8 @@
   "homepage": "https://github.com/Lokeh/observe-component#readme",
   "peerDependencies": {
     "kefir": "^3.2.0",
-    "react": "^0.14.7"
+    "react": "^0.14.7",
+    "rx": "^4.0.8"
   },
   "devDependencies": {
     "babel-cli": "^6.5.1",
