@@ -1,26 +1,18 @@
 import React from 'react';
 import {pool, constant} from 'kefir';
-
-class ComponentEvent {
-	constructor(type, event) {
-		this.type = type;
-		this.event = event;
-	}
-}
+import {createEventHandlers} from '../common/createEventHandlers';
+import {ComponentEvent} from '../common/componentEvent';
 
 export function observeComponent(Component, events = []) {
 	const __eventPool = new pool();	
-	const eventHandlers = {};
 	const plugEvent = (event) => __eventPool.plug(constant(event));
 
 	function ObservableComponent(props) {
-		events.forEach((type) => {
-			eventHandlers[type] = (event) => {
-				props[type] && props[type](event);
-				plugEvent(new ComponentEvent(type, event));
-			}
-		});
-
+		const createHandler = (type) => (event) => {
+			props[type] && props[type](event);
+			plugEvent(new ComponentEvent(type, event));
+		};
+		const eventHandlers = createEventHandlers(events, createHandler);
 		return (<Component {...props} {...eventHandlers} />);
 	};
 	

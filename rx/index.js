@@ -13,8 +13,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _kefir = require('kefir');
-
 var _rx = require('rx');
 
 var _rx2 = _interopRequireDefault(_rx);
