@@ -1,5 +1,4 @@
 import React from 'react';
-import {pool, constant} from 'kefir';
 import Rx from 'rx';
 
 class ComponentEvent {
