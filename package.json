@@ -1,11 +1,11 @@
 {
   "name": "observe-component",
   "version": "1.0.1",
-  "description": "A small library for accessing React component events as functional reactive streams",
-  "main": "lib/index.js",
+  "description": "Access React component events as functional reactive streams",
+  "main": "index.js",
   "scripts": {
     "test": "mocha --compilers js:babel-register",
-    "build": "babel src -d lib"
+    "build": "babel src -d ./"
   },
   "repository": {
     "type": "git",
@@ -31,7 +31,8 @@
   "homepage": "https://github.com/Lokeh/observe-component#readme",
   "peerDependencies": {
     "kefir": "^3.2.0",
-    "react": "^0.14.7"
+    "react": "^0.14.7",
+    "rx": "^4.0.8"
   },
   "devDependencies": {
     "babel-cli": "^6.5.1",
