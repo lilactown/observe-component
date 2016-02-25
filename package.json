@@ -42,5 +42,6 @@
     "mocha": "^2.4.5",
     "react-addons-test-utils": "^0.14.7",
     "sinon": "^1.17.3"
-  }
+  },
+  "dependencies": {}
 }

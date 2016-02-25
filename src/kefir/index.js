@@ -5,13 +5,18 @@ import {ComponentEvent} from '../common/componentEvent';
 
 export function observeComponent(Component, events = []) {
 	const __eventPool = new pool();	
-	const plugEvent = (event) => __eventPool.plug(constant(event));
+
+	function plugEvent(event) {
+		__eventPool.plug(constant(event));
+	}
 
 	function ObservableComponent(props) {
-		const createHandler = (type) => (event) => {
-			props[type] && props[type](event);
-			plugEvent(new ComponentEvent(type, event));
-		};
+		function createHandler(type) {
+			return function handler(event) {
+				props[type] && props[type](event);
+				plugEvent(new ComponentEvent(type, event));
+			};
+		}
 		const eventHandlers = createEventHandlers(events, createHandler);
 		return (<Component {...props} {...eventHandlers} />);
 	};
@@ -21,11 +26,4 @@ export function observeComponent(Component, events = []) {
 	return ObservableComponent;
 }
 
-export function fromComponent(ObservableComponent, filters) {
-	if (filters && filters.length) {
-		return ObservableComponent
-			.__eventStream
-			.filter(({type}) => filters.indexOf(type) > -1)
-	}
-	return ObservableComponent.__eventStream;
-}
+export {fromComponent} from '../common/fromComponent';
