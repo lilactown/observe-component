@@ -3,7 +3,7 @@
 ```javascript
 import React from 'react';
 import {render} from 'react-dom';
-import {observeComponent, fromComponent} from 'observe-component';
+import {observeComponent, fromComponent} from 'observe-component/kefir';
 
 const StreamingButton = observeComponent('button', ['onClick']);
 
@@ -27,12 +27,7 @@ const clickStream =
 npm install --save observe-component
 ```
 
-You will also need to install [Kefir](https://github.com/rpominov/kefir) and [React](https://github.com/facebook/react) if they're not already a part of your project:
-
-```bash
-npm install --save kefir
-npm install --save react
-```
+You will also need to install your choice of [Kefir](https://github.com/rpominov/kefir) or [RxJS](https://github.com/Reactive-Extensions/RxJS), and [React](https://github.com/facebook/react) if they're not already a part of your project:
 
 ## API
 
@@ -74,16 +69,44 @@ There are also plenty of libraries for connecting streams to React, but very few
 
 ## Dependencies
 
-At the moment, `observe-component` depends directly on [Kefir](https://rpominov.github.io/kefir/) for reactive streams. There is no reason for this. The library could easibly be ported to RxJS/Bacon.js/Fairmont/whatever. Under the hood, it uses Kefir's `pool` object (basically an equivalent to RxJS' `Subject`, or Bacon's `Bus`) to abstract the events into streams; we really never escape the bus, we just hide it. I'm interested in trying to create a portable version that can work with any reactive programming library.
+At the moment, `observe-component` allows a consumer to use either [Kefir](https://rpominov.github.io/kefir/) or [RxJS](https://github.com/Reactive-Extensions/RxJS) for reactive streams. Support for more FRP libraries is coming in the future. To use your choice of library, you can import like so:
+
+```javascript
+/* ES6 module syntax */
+// kefir.js
+import {observeComponent, fromComponent} from 'observe-component/kefir';
+
+// ...
+const Button = observeComponent('button', ['onClick'])
+const clickStream =
+	fromComponent(Button, ['onClick'])
+	.onValue((e) => console.log(e));
+
+// => ComponentEvent { type: 'onClick', event: SyntheticEvent }
+```
+
+```javascript
+// RxJS
+import {observeComponent, fromComponent} from 'observe-component/rx';
+
+// ...
+const Button = observeComponent('button', ['onClick'])
+const clickStream =
+	fromComponent(Button, ['onClick'])
+	.subscribe((e) => console.log(e));
+
+// => ComponentEvent { type: 'onClick', event: SyntheticEvent }
+```
 
 ## Examples
+For these examples, I will use the Kefir library. RxJS is quite similar.
 
 ### Components as stateless functions
 
 ```javascript
 import React, {Component} from 'react';
 import {render} from 'react-dom';
-import {observeComponent, fromComponent} from 'observe-component';
+import {observeComponent, fromComponent} from 'observe-component/kefir';
 
 const StreamingInput = observeComponent('input', ['onChange']);
 
