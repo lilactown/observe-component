@@ -1,6 +1,6 @@
 export class ComponentEvent {
-	constructor(type, event) {
+	constructor(type, value) {
 		this.type = type;
-		this.event = event;
+		this.value = value;
 	}
 }

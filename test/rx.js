@@ -35,7 +35,7 @@ describe('RxJS module', function () {
 			const result = shallowRenderer.getRenderOutput();
 
 			ObservableComponent.__eventStream.subscribe((e) => 
-				assert.deepEqual(e, { type: 'onClick', event: 'test event' }, "onClick")
+				assert.deepEqual(e, { type: 'onClick', value: 'test event' }, "onClick")
 			);
 			result.props.onClick('test event');
 		});

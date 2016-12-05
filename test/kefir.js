@@ -34,7 +34,7 @@ describe('Kefir module', function () {
 			const result = shallowRenderer.getRenderOutput();
 
 			ObservableComponent.__eventStream.onValue((e) => 
-				assert.deepEqual(e, { type: 'onClick', event: 'test event' }, "onClick")
+				assert.deepEqual(e, { type: 'onClick', value: 'test event' }, "onClick")
 			);
 			result.props.onClick('test event');
 		});
