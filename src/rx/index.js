@@ -4,7 +4,7 @@ import {createEventHandlers} from '../common/createEventHandlers';
 import {ComponentEvent} from '../common/componentEvent';
 
 // observeComponent :: String[] -> Component -> ObservableComponent
-export function observeComponent(events = []) {
+export function observeComponent(...events) {
 	return function observableComponentFactory(Component) {
 		const __eventSubject = new Rx.Subject();	
 		function onNext(event) {
