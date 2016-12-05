@@ -13,8 +13,10 @@ function MyButton(props) {
 
 render(<MyButton />, Document.getElementById('my-app'));
 
-const clickStream =
-	fromComponent(ObservableButton)
+const clickObservable =
+	fromComponent(ObservableButton);
+
+clickObservable
 	.onValue(() => {
 		console.log('world!');
 	});
@@ -33,7 +35,7 @@ You will also need to install your choice of [Kefir](https://github.com/rpominov
 
 #### `observeComponent(...events)(Component)`
 
-`observeComponent(...events)` returns a function that, when applied to a React component, returns a higher-order `ObservableComponent` with an attached stream of the specified events. Supports all events supported by React's event system.
+`observeComponent(...events)` returns a function that, when applied to a React component, returns a higher-order `ObservableComponent` with an attached observable of the specified events. Supports all events supported by React's event system.
 
 Example:
 ```javascript
@@ -41,9 +43,9 @@ const ObservableDiv = observeComponent('onMouseDown', 'onMouseUp')('div');
 ```
 
 #### `fromComponent(observeComponent, ...events)`
-Returns the stream attached to the `ObservableComponent`. Optional string `event` parameters can be supplied to return a stream only containing those events.
+Returns the observable attached to the `ObservableComponent`. Optional string `event` parameters can be supplied to return a observable only containing those events.
 
-fromComponent streams emit a `ComponentEvent` object.
+fromComponent observables emit a `ComponentEvent` object.
 
 Example:
 ```javascript
@@ -66,11 +68,11 @@ The `ComponentEvent` object contains two properties:
 
 Because Functional Reactive Programming is pretty cool, and so is React. However, React's API is not very FRP-friendly; the necessity to wire up events by hand using buses (or subjects, in RxJS-speak) easily leads us to the [Bus of Doom](https://gist.github.com/jonifreeman/5131428a9f04b69a76ae), and in general is finnicky and boilerplate-y to connect an observer to React.
 
-There are also plenty of libraries for connecting streams to React, but very few (none that I've found) that transition React events to streams, enabling a fully functional reactive architecture.
+There are also plenty of libraries for connecting observables to React, but very few (none that I've found) that transition React events to observables, enabling a fully functional reactive architecture.
 
 ## Dependencies
 
-At the moment, `observe-component` allows a consumer to use either [Kefir](https://rpominov.github.io/kefir/) or [RxJS](https://github.com/Reactive-Extensions/RxJS) for reactive streams. Support for more FRP libraries might become available if it is highly desired. To use your choice of library, you can import like so:
+At the moment, `observe-component` allows a consumer to use either [Kefir](https://rpominov.github.io/kefir/) or [RxJS](https://github.com/Reactive-Extensions/RxJS) for reactive observables. Support for more FRP libraries might become available if it is highly desired. To use your choice of library, you can import like so:
 
 ```javascript
 /* ES6 module syntax */
@@ -79,8 +81,10 @@ import {observeComponent, fromComponent} from 'observe-component/kefir';
 
 // ...
 const Button = observeComponent('onClick')('button');
-const clickStream =
+const clickObservable =
 	fromComponent(Button, 'onClick')
+
+clickObservable
 	.onValue((e) => console.log(e));
 
 // => ComponentEvent { type: 'onClick', value: SyntheticEvent }
@@ -92,8 +96,10 @@ import {observeComponent, fromComponent} from 'observe-component/rx';
 
 // ...
 const Button = observeComponent('onClick')('button');
-const clickStream =
-	fromComponent(Button, 'onClick')
+const clickObservable =
+	fromComponent(Button, 'onClick');
+
+clickObservable
 	.subscribe((e) => console.log(e));
 
 // => ComponentEvent { type: 'onClick', value: SyntheticEvent }
@@ -120,21 +126,23 @@ function MyApp(props) {
 	);
 }
 
-const nameStream =
+const nameObservable =
 	fromComponent(ObservableInput)
-	/* The streams values contain two properties:
+	/* The observables values contain two properties:
 		'type': The type of the event that was triggered, e.g. 'onChange'
 		'value': The React library `SyntheticEvent`
 	*/
-	.map(({type, value}) => value.target.value)
+	.map(({type, value}) => value.target.value);
+
+nameObservable
 	.onValue((name) => 
 		render(<MyApp name={name} />, document.getElementById('my-app'))
 	);
 
 ```
 
-### You can stream any kind of component
-...as long as you pass event handlers to the appropriate elements. The library simply passes special handlers to React's event system (`on<Event>`) to abstract them into streams.
+### You can observable any kind of component
+...as long as you pass event handlers to the appropriate elements. The library simply passes special handlers to React's event system (`on<Event>`) to abstract them into observables.
 
 ```javascript
 class MyWidget extends React.Component {
@@ -149,8 +157,10 @@ class MyWidget extends React.Component {
 }
 
 const ObservableWidget = observeComponent('onClick', 'onChange')(MyWidget);
-const widgetStream = 
-	fromComponent(ObservableWidget)
+const widgetObservable = 
+	fromComponent(ObservableWidget);
+
+widgetObservable
 	.onValue(({type, value}) => {
 		if (type === 'onClick') {
 			console.log('clicked');
@@ -161,7 +171,7 @@ const widgetStream =
 	});
 ```
 
-However, you are **strongly** encouraged to create streams out of basic components and merge them, rather than manually pass the event handlers yourself.
+However, you are **strongly** encouraged to create observables out of basic components and merge them, rather than manually pass the event handlers yourself.
 
 Also, if we can get away with it, we'd always like to use stateless functions as components. :)
 
@@ -182,12 +192,14 @@ function MyWidget(props) {
 	);
 }
 
-// We construct our application from the two streams
-const widgetStream = 
+// We construct our application from the two observables
+const widgetObservable = 
 	merge([
 		fromComponent(ObservableButton),
 		fromComponent(ObservableInput),
-	])
+	]);
+
+widgetObservable
 	.onValue(({type, value}) => {
 		if (type === 'onClick') {
 			console.log('clicked');
