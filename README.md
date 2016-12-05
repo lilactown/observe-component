@@ -5,16 +5,16 @@ import React from 'react';
 import {render} from 'react-dom';
 import {observeComponent, fromComponent} from 'observe-component/kefir';
 
-const StreamingButton = observeComponent('button', ['onClick']);
+const ObservableButton = observeComponent('onClick')('button');
 
 function MyButton(props) {
-	return (<StreamingButton>Hello</StreamingButton>);
+	return (<ObservableButton>Hello</ObservableButton>);
 }
 
 render(<MyButton />, Document.getElementById('my-app'));
 
 const clickStream =
-	fromComponent(StreamingButton)
+	fromComponent(ObservableButton)
 	.onValue(() => {
 		console.log('world!');
 	});
@@ -31,35 +31,36 @@ You will also need to install your choice of [Kefir](https://github.com/rpominov
 
 ## API
 
-#### `observeComponent(Component, events[])`
-Returns a higher-order `ObservableComponent` with an attached stream of the specified events. Supports all events supported by React's event system.
+#### `observeComponent(...events)(Component)`
+
+`observeComponent(...events)` returns a function that, when applied to a React component, returns a higher-order `ObservableComponent` with an attached stream of the specified events. Supports all events supported by React's event system.
 
 Example:
 ```javascript
-const StreamingDiv = observeComponent('div', ['onMouseDown', 'onMouseUp']);
+const ObservableDiv = observeComponent('onMouseDown', 'onMouseUp')('div');
 ```
 
-#### `fromComponent(observeComponent, [ events[] ])`
-Returns the stream attached to the `ObservableComponent`. An optional array of `events` can be supplied to return a stream only containing those events.
+#### `fromComponent(observeComponent, ...events)`
+Returns the stream attached to the `ObservableComponent`. Optional string `event` parameters can be supplied to return a stream only containing those events.
 
 fromComponent streams emit a `ComponentEvent` object.
 
 Example:
 ```javascript
-const StreamingDiv = observeComponent('div', ['onMouseDown', 'onMouseUp']);
+const ObservableDiv = observeComponent('onMouseDown', 'onMouseUp')('div');
 
 // will log all 'onMouseDown' and 'onMouseUp' events
-fromComponent(StreamingDiv).log()
+fromComponent(ObservableDiv).log()
 
 // will only log 'onMouseUp' events
-fromComponent(StreamingDiv, ['onMouseUp']).log();
+fromComponent(ObservableDiv, 'onMouseUp').log();
 ```
 
 #### `ComponentEvent`
 
 The `ComponentEvent` object contains two properties:
 - `type` : a string which identifies the event that has occurred, e.g.: 'onClick', 'onScroll'
-- `event` : the React library `SyntheticEvent` (see: [Event System](https://facebook.github.io/react/docs/events.html))
+- `value` : typically the React library `SyntheticEvent` (see: [Event System](https://facebook.github.io/react/docs/events.html))
 
 ## But why?
 
@@ -69,7 +70,7 @@ There are also plenty of libraries for connecting streams to React, but very few
 
 ## Dependencies
 
-At the moment, `observe-component` allows a consumer to use either [Kefir](https://rpominov.github.io/kefir/) or [RxJS](https://github.com/Reactive-Extensions/RxJS) for reactive streams. Support for more FRP libraries is coming in the future. To use your choice of library, you can import like so:
+At the moment, `observe-component` allows a consumer to use either [Kefir](https://rpominov.github.io/kefir/) or [RxJS](https://github.com/Reactive-Extensions/RxJS) for reactive streams. Support for more FRP libraries might become available if it is highly desired. To use your choice of library, you can import like so:
 
 ```javascript
 /* ES6 module syntax */
@@ -77,12 +78,12 @@ At the moment, `observe-component` allows a consumer to use either [Kefir](https
 import {observeComponent, fromComponent} from 'observe-component/kefir';
 
 // ...
-const Button = observeComponent('button', ['onClick'])
+const Button = observeComponent('onClick')('button');
 const clickStream =
-	fromComponent(Button, ['onClick'])
+	fromComponent(Button, 'onClick')
 	.onValue((e) => console.log(e));
 
-// => ComponentEvent { type: 'onClick', event: SyntheticEvent }
+// => ComponentEvent { type: 'onClick', value: SyntheticEvent }
 ```
 
 ```javascript
@@ -90,12 +91,12 @@ const clickStream =
 import {observeComponent, fromComponent} from 'observe-component/rx';
 
 // ...
-const Button = observeComponent('button', ['onClick'])
+const Button = observeComponent('onClick')('button');
 const clickStream =
-	fromComponent(Button, ['onClick'])
+	fromComponent(Button, 'onClick')
 	.subscribe((e) => console.log(e));
 
-// => ComponentEvent { type: 'onClick', event: SyntheticEvent }
+// => ComponentEvent { type: 'onClick', value: SyntheticEvent }
 ```
 
 ## Examples
@@ -108,24 +109,24 @@ import React, {Component} from 'react';
 import {render} from 'react-dom';
 import {observeComponent, fromComponent} from 'observe-component/kefir';
 
-const StreamingInput = observeComponent('input', ['onChange']);
+const ObservableInput = observeComponent('onChange')('input');
 
 function MyApp(props) {
 	return (
 		<div>
 			<div>Hello {this.props.name}!</div>
-			<StreamingInput type="text" />
+			<ObservableInput type="text" />
 		</div>
 	);
 }
 
 const nameStream =
-	fromComponent(StreamingInput)
+	fromComponent(ObservableInput)
 	/* The streams values contain two properties:
 		'type': The type of the event that was triggered, e.g. 'onChange'
-		'event': The React library `SyntheticEvent`
+		'value': The React library `SyntheticEvent`
 	*/
-	.map(({type, event}) => event.target.value)
+	.map(({type, value}) => value.target.value)
 	.onValue((name) => 
 		render(<MyApp name={name} />, document.getElementById('my-app'))
 	);
@@ -147,15 +148,15 @@ class MyWidget extends React.Component {
 	}
 }
 
-const StreamingWidget = observeComponent(MyWidget, ['onClick', 'onChange']);
+const ObservableWidget = observeComponent('onClick', 'onChange')(MyWidget);
 const widgetStream = 
-	fromComponent(StreamingWidget)
-	.onValue(({type, event}) => {
+	fromComponent(ObservableWidget)
+	.onValue(({type, value}) => {
 		if (type === 'onClick') {
 			console.log('clicked');
 		}
 		else if (type === 'onChange') {
-			console.log('changed: '+event.target.value);
+			console.log('changed: '+value.target.value);
 		}
 	});
 ```
@@ -168,15 +169,15 @@ Also, if we can get away with it, we'd always like to use stateless functions as
 import {merge} from 'kefir';
 
 // Create Observable button and Observable inputs
-const StreamingButton = observeComponent('button', ['onClick']);
-const StreamingInput = observeComponent('input', ['onChange']);
+const ObservableButton = observeComponent('onClick')('button');
+const ObservableInput = observeComponent('onChange')('input');
 
 // Component is simply a function from props to view
 function MyWidget(props) {
 	return (
 		<div>
-			<StreamingButton>Click me!</StreamingButton>
-			<StreamingInput defaultValue="Change me!" />
+			<ObservableButton>Click me!</ObservableButton>
+			<ObservableInput defaultValue="Change me!" />
 		</div>
 	);
 }
@@ -184,15 +185,15 @@ function MyWidget(props) {
 // We construct our application from the two streams
 const widgetStream = 
 	merge([
-		fromComponent(StreamingButton),
-		fromComponent(StreamingInput),
+		fromComponent(ObservableButton),
+		fromComponent(ObservableInput),
 	])
-	.onValue(({type, event}) => {
+	.onValue(({type, value}) => {
 		if (type === 'onClick') {
 			console.log('clicked');
 		}
 		else if (type === 'onChange') {
-			console.log('changed: '+event.target.value);
+			console.log('changed: '+value.target.value);
 		}
 	});
 ```

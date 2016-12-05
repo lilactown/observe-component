@@ -1,8 +1,8 @@
 import React from 'react';
 import {render} from 'react-dom';
-import {streamComponent, fromComponent} from 'observe-component';
+import {observeComponent, fromComponent} from 'observe-component';
 
-const Button = streamComponent('button', ['onClick']);
+const Button = observeComponent('onClick')('button');
 const clickStream = fromComponent(Button);
 
 function App(props) {
