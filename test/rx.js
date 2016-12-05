@@ -10,31 +10,31 @@ describe('RxJS module', function () {
 		const shallowRenderer = createRenderer();
 
 		it('should return a valid React component', function () {
-			const Streamable = observeComponent('button', ['onClick']);
-			shallowRenderer.render(<Streamable />);
+			const ObservableComponent = observeComponent(['onClick'])('button');
+			shallowRenderer.render(<ObservableComponent />);
 			const result = shallowRenderer.getRenderOutput();
 
 			assert.strictEqual(result.type, 'button', "is a button component");
 		});
 
 		it('should have an __eventStream property', function () {
-			const Streamable = observeComponent('button', ['onClick']);
-			assert.strictEqual(!!Streamable.__eventStream, true, "has __eventStream");
+			const ObservableComponent = observeComponent(['onClick'])('button');
+			assert.strictEqual(!!ObservableComponent.__eventStream, true, "has __eventStream");
 		});
 
 		it('should have an onClick event handler', function () {
-			const Streamable = observeComponent('button', ['onClick']);
-			shallowRenderer.render(<Streamable />);
+			const ObservableComponent = observeComponent(['onClick'])('button');
+			shallowRenderer.render(<ObservableComponent />);
 			const result = shallowRenderer.getRenderOutput();
 			assert.strictEqual(!!result.props.onClick, true, "has onClick");
 		});
 
 		it('should emit a value on __eventStream when an event is triggered', function () {
-			const Streamable = observeComponent('button', ['onClick']);
-			shallowRenderer.render(<Streamable />);
+			const ObservableComponent = observeComponent(['onClick'])('button');
+			shallowRenderer.render(<ObservableComponent />);
 			const result = shallowRenderer.getRenderOutput();
 
-			Streamable.__eventStream.subscribe((e) => 
+			ObservableComponent.__eventStream.subscribe((e) => 
 				assert.deepEqual(e, { type: 'onClick', event: 'test event' }, "onClick")
 			);
 			result.props.onClick('test event');
