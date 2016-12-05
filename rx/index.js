@@ -32,27 +32,32 @@ var _componentEvent = require('../common/componentEvent');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function observeComponent(Component) {
-	var events = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
-
-	var __eventSubject = new _rx2.default.Subject();
-	function onNext(event) {
-		__eventSubject.onNext(event);
+// observeComponent :: String[] -> Component -> ObservableComponent
+function observeComponent() {
+	for (var _len = arguments.length, events = Array(_len), _key = 0; _key < _len; _key++) {
+		events[_key] = arguments[_key];
 	}
 
-	function ObservableComponent(props) {
-		function createHandler(type) {
-			return function handler(event) {
-				props[type] && props[type](event);
-				onNext(new _componentEvent.ComponentEvent(type, event));
-			};
+	return function observableComponentFactory(Component) {
+		var __eventSubject = new _rx2.default.Subject();
+		function onNext(event) {
+			__eventSubject.onNext(event);
 		}
-		var eventHandlers = (0, _createEventHandlers.createEventHandlers)(events, createHandler);
 
-		return _react2.default.createElement(Component, _extends({}, props, eventHandlers));
+		function ObservableComponent(props) {
+			function createHandler(type) {
+				return function handler(event) {
+					props[type] && props[type](event);
+					onNext(new _componentEvent.ComponentEvent(type, event));
+				};
+			}
+			var eventHandlers = (0, _createEventHandlers.createEventHandlers)(events, createHandler);
+
+			return _react2.default.createElement(Component, _extends({}, props, eventHandlers));
+		};
+
+		ObservableComponent.__eventStream = __eventSubject.asObservable(); // return Observable
+
+		return ObservableComponent;
 	};
-
-	ObservableComponent.__eventStream = __eventSubject.asObservable(); // return Observable
-
-	return ObservableComponent;
 }
