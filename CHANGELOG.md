@@ -3,6 +3,7 @@
 ## observeComponent
 
 Old signature: `observeComponent(Component, events) -> ObservableComponent`
+
 New signature: `observeComponent(...events) -> fn(Component) -> ObservableComponent`
 
 `observeComponent` now is a higher-order function (it returns a function) to make the API support composability with other higher-order component libraries.
@@ -22,6 +23,7 @@ const ObservableInput = observeComponent('onChange', 'onBlur')('input');
 ## fromComponent
 
 Old signature: `fromComponent(ObservableComponent, events = []) -> Observable<ComponentEvent>`
+
 New signature: `fromComponent(ObservableComponent, ...events) -> Observable<ComponentEvent>`
 
 `fromComponent` now accepts an indefinite number of `event` string arguments instead of passing them in as an array.
