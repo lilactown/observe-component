@@ -6,7 +6,7 @@ import Rx from 'rx';
 
 describe('RxJS module', function () {
 	describe('observeComponent', function () {
-		const observeComponent = require('../src/rx').observeComponent;
+		const observeComponent = require('../rx').observeComponent;
 		const shallowRenderer = createRenderer();
 
 		it('should return a valid React component', function () {
@@ -62,7 +62,7 @@ describe('RxJS module', function () {
 	});
 
 	describe('fromComponent', function () {
-		const fromComponent = require('../src/rx').fromComponent;
+		const fromComponent = require('../rx').fromComponent;
 		it('should return the __eventStream property set on an object', function () {
 			const obj = {
 				__eventStream: true

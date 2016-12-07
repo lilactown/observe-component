@@ -2,7 +2,7 @@ import assert from 'assert';
 
 describe('common functions and classes across libraries', function () {
 	describe('createEventHandlers', function () {
-		const {createEventHandlers} = require('../src/common/createEventHandlers');
+		const {createEventHandlers} = require('../common/createEventHandlers');
 		it('should take an array of event names and a function and execute the function for each event', function () {
 
 		});

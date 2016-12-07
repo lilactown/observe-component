@@ -5,7 +5,7 @@ import K from 'kefir';
 
 describe('Kefir module', function () {
 	describe('observeComponent', function () {
-		const observeComponent = require('../src/kefir').observeComponent;
+		const observeComponent = require('../kefir').observeComponent;
 		const shallowRenderer = createRenderer();
 
 		it('should return a valid React component', function () {
@@ -61,7 +61,7 @@ describe('Kefir module', function () {
 	});
 
 	describe('fromComponent', function () {
-		const fromComponent = require('../src/kefir').fromComponent;
+		const fromComponent = require('../kefir').fromComponent;
 		it('should return the __eventStream property set on an object', function () {
 			const obj = {
 				__eventStream: true
