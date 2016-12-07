@@ -1,5 +1,5 @@
-import React from 'react';
-import Rx from 'rx';
+import * as React from 'react';
+import * as Rx from 'rx';
 import {createEventHandlers} from '../common/createEventHandlers';
 import {ComponentEvent} from '../common/componentEvent';
 

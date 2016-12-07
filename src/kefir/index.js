@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {pool, constant} from 'kefir';
 import {createEventHandlers} from '../common/createEventHandlers';
 import {ComponentEvent} from '../common/componentEvent';
