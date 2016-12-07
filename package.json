@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --compilers js:babel-register",
-    "build": "babel src -d ./"
+    "build": "tsc; mv ./build/* ."
   },
   "repository": {
     "type": "git",
@@ -41,7 +41,8 @@
     "babel-register": "^6.5.2",
     "mocha": "^2.4.5",
     "react-addons-test-utils": "^0.14.7",
-    "sinon": "^1.17.3"
+    "sinon": "^1.17.3",
+    "typescript": "^2.1.4"
   },
   "dependencies": {}
 }
