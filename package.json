@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --compilers js:babel-register",
-    "build": "tsc; mv ./build/* ."
+    "build": "tsc; ./build.sh"
   },
   "repository": {
     "type": "git",
