@@ -1,8 +1,16 @@
 "use strict";
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
 var React = require("react");
 var Rx = require("rx");
 var createEventHandlers_1 = require("../common/createEventHandlers");
-var componentEvent_1 = require("../common/componentEvent");
+var ComponentEvent_1 = require("../common/ComponentEvent");
 // observeComponent :: String[] -> Component -> ObservableComponent
 function observeComponent() {
     var events = [];
@@ -14,19 +22,18 @@ function observeComponent() {
         function onNext(event) {
             __eventSubject.onNext(event);
         }
-        function ObservableComponent(props) {
+        var HOC = function (props) {
             function createHandler(type) {
                 return function handler(event) {
                     props[type] && props[type](event);
-                    onNext(new componentEvent_1.ComponentEvent(type, event));
+                    onNext(new ComponentEvent_1.ComponentEvent(type, event));
                 };
             }
             var eventHandlers = createEventHandlers_1.createEventHandlers(events, createHandler);
-            return (<Component {...props} {...eventHandlers}/>);
-        }
-        ;
-        ObservableComponent.__eventStream = __eventSubject.asObservable(); // return Observable
-        return ObservableComponent;
+            return (React.createElement(Component, __assign({}, props, eventHandlers)));
+        };
+        HOC.__eventStream = __eventSubject.asObservable(); // return Observable
+        return HOC;
     };
 }
 exports.observeComponent = observeComponent;

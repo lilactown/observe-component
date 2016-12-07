@@ -35,6 +35,8 @@
     "rx": "^4.0.8"
   },
   "devDependencies": {
+    "@types/react": "^0.14.54",
+    "@types/react-dom": "^0.14.19",
     "babel-cli": "^6.5.1",
     "babel-preset-es2015": "^6.5.0",
     "babel-preset-react": "^6.5.0",
