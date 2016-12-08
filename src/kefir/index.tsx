@@ -7,7 +7,7 @@ export interface ObservableComponent<P> extends React.StatelessComponent<P> {
     __eventStream: Rx.Observable<any>;
 };
 
-export type Component = React.ComponentClass<any> | React.StatelessComponent<any> | string
+export type Component = React.ComponentClass<any> | React.StatelessComponent<any> | string;
 export type ComponentFactory<P> = (Component: Component) => ObservableComponent<P>;
 
 // observeComponent :: String[] -> Component -> ObservableComponent

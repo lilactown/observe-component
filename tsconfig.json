@@ -4,7 +4,8 @@
         "allowJs": false,
         "target": "es5",
         "jsx": "react",
-        "declaration": true
+        "declaration": true,
+        "sourceMap": true
     },
     "include": [
         "./src/**/*"

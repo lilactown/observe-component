@@ -15,3 +15,4 @@ function createEventHandlers(events, handlerFn) {
     }, {});
 }
 exports.createEventHandlers = createEventHandlers;
+//# sourceMappingURL=createEventHandlers.js.map
