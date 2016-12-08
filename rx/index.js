@@ -11,6 +11,7 @@ var React = require("react");
 var Rx = require("rx");
 var createEventHandlers_1 = require("../common/createEventHandlers");
 var ComponentEvent_1 = require("../common/ComponentEvent");
+;
 // observeComponent :: String[] -> Component -> ObservableComponent
 function observeComponent() {
     var events = [];
@@ -22,7 +23,7 @@ function observeComponent() {
         function onNext(event) {
             __eventSubject.onNext(event);
         }
-        var HOC = function (props) {
+        function HOC(props) {
             function createHandler(type) {
                 return function handler(event) {
                     props[type] && props[type](event);
@@ -31,7 +32,8 @@ function observeComponent() {
             }
             var eventHandlers = createEventHandlers_1.createEventHandlers(events, createHandler);
             return (React.createElement(Component, __assign({}, props, eventHandlers)));
-        };
+        }
+        ;
         HOC.__eventStream = __eventSubject.asObservable(); // return Observable
         return HOC;
     };
