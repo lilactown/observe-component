@@ -7,6 +7,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
+;
 // createEventHandlers :: String[] -> Function -> Map<String, Function>
 function createEventHandlers(events, handlerFn) {
     return events.reduce(function (handlerMap, type) {

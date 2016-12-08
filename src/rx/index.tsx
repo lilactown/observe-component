@@ -4,11 +4,11 @@ import {createEventHandlers} from '../common/createEventHandlers';
 import {ComponentEvent} from '../common/ComponentEvent';
 
 export interface ObservableComponent<P> extends React.StatelessComponent<P> {
-    __eventStream: Rx.Observable<any>;
+    __eventStream: Rx.Observable<ComponentEvent>;
 };
 
 export type Component = React.ComponentClass<any> | React.StatelessComponent<any> | string
-export type ComponentFactory<P> = (Component: Component) => ObservableComponent<P>;
+export type ComponentFactory<P> = (Component: Component) => Component;
 
 // observeComponent :: String[] -> Component -> ObservableComponent
 export function observeComponent<P>(...events: string[]): ComponentFactory<P> {
@@ -21,7 +21,7 @@ export function observeComponent<P>(...events: string[]): ComponentFactory<P> {
 		}
 
 		function HOC(props: any): JSX.Element {
-			function createHandler(type: string): Function {
+			function createHandler(type: string): (event) => void {
 				return function handler(event: any) {
 					props[type] && props[type](event);
 					onNext(new ComponentEvent(type, event));

@@ -4,26 +4,26 @@ import {createEventHandlers} from '../common/createEventHandlers';
 import {ComponentEvent} from '../common/ComponentEvent';
 
 export interface ObservableComponent<P> extends React.StatelessComponent<P> {
-    __eventStream: Rx.Observable<any>;
+    __eventStream: any;
 };
 
 export type Component = React.ComponentClass<any> | React.StatelessComponent<any> | string;
-export type ComponentFactory<P> = (Component: Component) => ObservableComponent<P>;
+export type ComponentFactory<P> = (Component: Component) => Component;
 
 // observeComponent :: String[] -> Component -> ObservableComponent
 export function observeComponent<P>(...events: string[]): ComponentFactory<P> {
 	return function observableComponentFactory(
 		Component: Component
 	): ObservableComponent<P> {
-		const __eventPool = Kefir.pool();	
+		const __eventPool: any = Kefir.pool();	
 
 		function plugEvent(event: ComponentEvent): void {
 			__eventPool.plug(Kefir.constant(event));
 		}
 
 		function HOC(props: any): JSX.Element {
-			function createHandler(type: string): Function {
-				return function handler(event: any) {
+			function createHandler(type: string): (event) => void {
+				return function handler(event) {
 					props[type] && props[type](event);
 					plugEvent(new ComponentEvent(type, event));
 				};
