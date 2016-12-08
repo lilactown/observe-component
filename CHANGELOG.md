@@ -1,3 +1,9 @@
+# 3.1.0
+
+- Full refactor using typescript now (no functionality changes)
+- Add React as direct dependency (possibly able to remove this later??)
+- update React version
+
 # 2.x to 3.0.0
 
 ## observeComponent
