@@ -31,6 +31,7 @@ function observeComponent() {
                 };
             }
             var eventHandlers = createEventHandlers_1.createEventHandlers(events, createHandler);
+            // return React.createElement(Component, {...props, ...eventHandlers})
             return (React.createElement(Component, __assign({}, props, eventHandlers)));
         }
         ;

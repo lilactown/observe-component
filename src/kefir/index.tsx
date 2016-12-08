@@ -3,17 +3,18 @@ import * as Kefir from 'kefir';
 import {createEventHandlers} from '../common/createEventHandlers';
 import {ComponentEvent} from '../common/ComponentEvent';
 
-
-export interface ObservableComponent {
-    (props: any): JSX.Element;
-    __eventStream: any;
+export interface ObservableComponent<P> extends React.StatelessComponent<P> {
+    __eventStream: Rx.Observable<any>;
 };
 
-export type ComponentFactory = (Component: typeof React.Component) => ObservableComponent;
+export type Component = React.ComponentClass<any> | React.StatelessComponent<any> | string
+export type ComponentFactory<P> = (Component: Component) => ObservableComponent<P>;
 
 // observeComponent :: String[] -> Component -> ObservableComponent
-export function observeComponent(...events: string[]): ComponentFactory {
-	return function observableComponentFactory(Component: typeof React.Component): ObservableComponent {
+export function observeComponent<P>(...events: string[]): ComponentFactory<P> {
+	return function observableComponentFactory(
+		Component: Component
+	): ObservableComponent<P> {
 		const __eventPool = Kefir.pool();	
 
 		function plugEvent(event: ComponentEvent): void {
@@ -32,15 +33,15 @@ export function observeComponent(...events: string[]): ComponentFactory {
 			return (<Component {...props} {...eventHandlers} />);
 		};
 		
-		(HOC as ObservableComponent).__eventStream = __eventPool.map((v) => v); // return Observable
+		(HOC as ObservableComponent<P>).__eventStream = __eventPool.map((v) => v); // return Observable
 
-		return (HOC as ObservableComponent);
+		return (HOC as ObservableComponent<P>);
 	};
 }
 
 // fromComponent :: ObservableComponent -> String[] -> Observable
 export function fromComponent(
-	observableComponent: ObservableComponent,
+	observableComponent: ObservableComponent<any>,
 	...filters: string[]
 	): any {
 	if (filters && filters.length) {

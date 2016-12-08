@@ -3,16 +3,18 @@ import * as Rx from 'rx';
 import {createEventHandlers} from '../common/createEventHandlers';
 import {ComponentEvent} from '../common/ComponentEvent';
 
-export interface ObservableComponent {
-    (props: any): JSX.Element;
+export interface ObservableComponent<P> extends React.StatelessComponent<P> {
     __eventStream: Rx.Observable<any>;
 };
 
-export type ComponentFactory = (Component: typeof React.Component) => ObservableComponent;
+export type Component = React.ComponentClass<any> | React.StatelessComponent<any> | string
+export type ComponentFactory<P> = (Component: Component) => ObservableComponent<P>;
 
 // observeComponent :: String[] -> Component -> ObservableComponent
-export function observeComponent(...events: string[]): ComponentFactory {
-	return function observableComponentFactory(Component: typeof React.Component): ObservableComponent {
+export function observeComponent<P>(...events: string[]): ComponentFactory<P> {
+	return function observableComponentFactory(
+		Component: Component
+	): ObservableComponent<P> {
 		const __eventSubject: Rx.Subject<any> = new Rx.Subject();
 		function onNext(event: ComponentEvent) {
 			__eventSubject.onNext(event);
@@ -27,18 +29,19 @@ export function observeComponent(...events: string[]): ComponentFactory {
 			}
 			const eventHandlers = createEventHandlers(events, createHandler);
 
+			// return React.createElement(Component, {...props, ...eventHandlers})
 			return (<Component {...props} {...eventHandlers} />);
 		};
 		
-		(HOC as ObservableComponent).__eventStream = __eventSubject.asObservable(); // return Observable
+		(HOC as ObservableComponent<P>).__eventStream = __eventSubject.asObservable(); // return Observable
 
-		return (HOC as ObservableComponent);
+		return (HOC as ObservableComponent<P>);
 	};
 }
 
 // fromComponent :: ObservableComponent -> String[] -> Observable
 export function fromComponent(
-	observableComponent: ObservableComponent,
+	observableComponent: ObservableComponent<any>,
 	...filters: string[]
 ): Rx.Observable<any> {
 	if (filters && filters.length) {
