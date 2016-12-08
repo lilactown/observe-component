@@ -4,14 +4,16 @@ import {createEventHandlers} from '../common/createEventHandlers';
 import {ComponentEvent} from '../common/ComponentEvent';
 
 
-export interface KefirObservableComponent {
+export interface ObservableComponent {
     (props: any): JSX.Element;
     __eventStream: any;
 };
 
+export type ComponentFactory = (Component: typeof React.Component) => ObservableComponent;
+
 // observeComponent :: String[] -> Component -> ObservableComponent
-export function observeComponent(...events: string[]): (Component: typeof React.Component) => KefirObservableComponent {
-	return function observableComponentFactory(Component: typeof React.Component): KefirObservableComponent {
+export function observeComponent(...events: string[]): ComponentFactory {
+	return function observableComponentFactory(Component: typeof React.Component): ObservableComponent {
 		const __eventPool = Kefir.pool();	
 
 		function plugEvent(event: ComponentEvent): void {
@@ -30,10 +32,21 @@ export function observeComponent(...events: string[]): (Component: typeof React.
 			return (<Component {...props} {...eventHandlers} />);
 		};
 		
-		(HOC as KefirObservableComponent).__eventStream = __eventPool.map((v) => v); // return Observable
+		(HOC as ObservableComponent).__eventStream = __eventPool.map((v) => v); // return Observable
 
-		return (HOC as KefirObservableComponent);
+		return (HOC as ObservableComponent);
 	};
 }
 
-export {fromComponent} from '../common/fromComponent';
+// fromComponent :: ObservableComponent -> String[] -> Observable
+export function fromComponent(
+	observableComponent: ObservableComponent,
+	...filters: string[]
+	): any {
+	if (filters && filters.length) {
+		return observableComponent
+			.__eventStream
+			.filter(({ type }): boolean => filters.indexOf(type) > -1);
+	}
+	return observableComponent.__eventStream;
+}

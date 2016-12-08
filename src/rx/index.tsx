@@ -3,14 +3,16 @@ import * as Rx from 'rx';
 import {createEventHandlers} from '../common/createEventHandlers';
 import {ComponentEvent} from '../common/ComponentEvent';
 
-export interface RxObservableComponent {
+export interface ObservableComponent {
     (props: any): JSX.Element;
     __eventStream: Rx.Observable<any>;
 };
 
+export type ComponentFactory = (Component: typeof React.Component) => ObservableComponent;
+
 // observeComponent :: String[] -> Component -> ObservableComponent
-export function observeComponent(...events: string[]): (Component: typeof React.Component) => RxObservableComponent {
-	return function observableComponentFactory(Component: typeof React.Component): RxObservableComponent {
+export function observeComponent(...events: string[]): ComponentFactory {
+	return function observableComponentFactory(Component: typeof React.Component): ObservableComponent {
 		const __eventSubject: Rx.Subject<any> = new Rx.Subject();
 		function onNext(event: ComponentEvent) {
 			__eventSubject.onNext(event);
@@ -28,10 +30,21 @@ export function observeComponent(...events: string[]): (Component: typeof React.
 			return (<Component {...props} {...eventHandlers} />);
 		};
 		
-		(HOC as RxObservableComponent).__eventStream = __eventSubject.asObservable(); // return Observable
+		(HOC as ObservableComponent).__eventStream = __eventSubject.asObservable(); // return Observable
 
-		return (HOC as RxObservableComponent);
+		return (HOC as ObservableComponent);
 	};
 }
 
-export {fromComponent} from '../common/fromComponent';
+// fromComponent :: ObservableComponent -> String[] -> Observable
+export function fromComponent(
+	observableComponent: ObservableComponent,
+	...filters: string[]
+): Rx.Observable<any> {
+	if (filters && filters.length) {
+		return observableComponent
+			.__eventStream
+			.filter(({ type }): boolean => filters.indexOf(type) > -1);
+	}
+	return observableComponent.__eventStream;
+}
