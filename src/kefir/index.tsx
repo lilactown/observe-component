@@ -10,7 +10,7 @@ export interface KefirObservableComponent {
 };
 
 // observeComponent :: String[] -> Component -> ObservableComponent
-export function observeComponent(...events: string[]): Function {
+export function observeComponent(...events: string[]): (Component: typeof React.Component) => KefirObservableComponent {
 	return function observableComponentFactory(Component: typeof React.Component): KefirObservableComponent {
 		const __eventPool = Kefir.pool();	
 

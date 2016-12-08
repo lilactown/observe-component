@@ -9,7 +9,7 @@ export interface RxObservableComponent {
 };
 
 // observeComponent :: String[] -> Component -> ObservableComponent
-export function observeComponent(...events: string[]): Function {
+export function observeComponent(...events: string[]): (Component: typeof React.Component) => RxObservableComponent {
 	return function observableComponentFactory(Component: typeof React.Component): RxObservableComponent {
 		const __eventSubject: Rx.Subject<any> = new Rx.Subject();
 		function onNext(event: ComponentEvent) {
