@@ -3,6 +3,7 @@
   "version": "3.0.1",
   "description": "Access React component events as functional reactive streams",
   "main": "index.js",
+  "typings": "index",
   "scripts": {
     "test": "mocha --compilers js:babel-register",
     "build": "tsc; ./build.sh"
