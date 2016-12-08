@@ -1,3 +1,5 @@
+#!/bin/sh
+
 rm -r rx
 rm -r kefir
 rm -r common

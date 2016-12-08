@@ -7,4 +7,3 @@ var ComponentEvent = (function () {
     return ComponentEvent;
 }());
 exports.ComponentEvent = ComponentEvent;
-//# sourceMappingURL=ComponentEvent.js.map

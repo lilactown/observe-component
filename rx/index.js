@@ -57,4 +57,3 @@ function fromComponent(observableComponent) {
     return observableComponent.__eventStream;
 }
 exports.fromComponent = fromComponent;
-//# sourceMappingURL=index.js.map
