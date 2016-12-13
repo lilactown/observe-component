@@ -2,8 +2,8 @@
 
 ```javascript
 import React from 'react';
-import {render} from 'react-dom';
-import {observeComponent, fromComponent} from 'observe-component/kefir';
+import { render } from 'react-dom';
+import { observeComponent, fromComponent } from 'observe-component/kefir';
 
 const ObservableButton = observeComponent('onClick')('button');
 
@@ -29,7 +29,8 @@ clickObservable
 npm install --save observe-component
 ```
 
-You will also need to install your choice of [Kefir](https://github.com/rpominov/kefir) or [RxJS](https://github.com/Reactive-Extensions/RxJS), and [React](https://github.com/facebook/react) if they're not already a part of your project:
+You will also need to install your choice of [Kefir](https://github.com/rpominov/kefir), 
+[RxJS (v4)](https://github.com/Reactive-Extensions/RxJS), or [RxJS (v5+)](https://github.com/ReactiveX/rxjs), and [React](https://github.com/facebook/react) if they're not already a part of your project.
 
 ## API
 
@@ -51,7 +52,8 @@ Example:
 ```javascript
 const ObservableDiv = observeComponent('onMouseDown', 'onMouseUp')('div');
 
-// will log all 'onMouseDown' and 'onMouseUp' events
+// with the Kefir library, we can use the `log()` operator,
+// which will log all 'onMouseDown' and 'onMouseUp' events
 fromComponent(ObservableDiv).log()
 
 // will only log 'onMouseUp' events
@@ -72,12 +74,12 @@ There are also plenty of libraries for connecting observables to React, but very
 
 ## Dependencies
 
-At the moment, `observe-component` allows a consumer to use either [Kefir](https://rpominov.github.io/kefir/) or [RxJS](https://github.com/Reactive-Extensions/RxJS) for reactive observables. Support for more FRP libraries might become available if it is highly desired. To use your choice of library, you can import like so:
+At the moment, `observe-component` allows a consumer to use either [Kefir](https://rpominov.github.io/kefir/), [RxJS v4](https://github.com/Reactive-Extensions/RxJS) or [RxJS v5](https://github.com/ReactiveX/rxjs) for observables. Support for more FRP libraries might become available if it is highly desired. To use your choice of library, you can import like so:
 
 ```javascript
 /* ES6 module syntax */
 // kefir.js
-import {observeComponent, fromComponent} from 'observe-component/kefir';
+import { observeComponent, fromComponent } from 'observe-component/kefir';
 
 // ...
 const Button = observeComponent('onClick')('button');
@@ -91,8 +93,23 @@ clickObservable
 ```
 
 ```javascript
-// RxJS
-import {observeComponent, fromComponent} from 'observe-component/rx';
+// RxJS v4
+import { observeComponent, fromComponent } from 'observe-component/rx';
+
+// ...
+const Button = observeComponent('onClick')('button');
+const clickObservable =
+	fromComponent(Button, 'onClick');
+
+clickObservable
+	.subscribe((e) => console.log(e));
+
+// => ComponentEvent { type: 'onClick', value: SyntheticEvent }
+```
+
+```javascript
+// RxJS v5+
+import { observeComponent, fromComponent } from 'observe-component/rxjs';
 
 // ...
 const Button = observeComponent('onClick')('button');
@@ -111,9 +128,9 @@ For these examples, I will use the Kefir library. RxJS is quite similar.
 ### Components as stateless functions
 
 ```javascript
-import React, {Component} from 'react';
-import {render} from 'react-dom';
-import {observeComponent, fromComponent} from 'observe-component/kefir';
+import React, { Component } from 'react';
+import { render } from 'react-dom';
+import { observeComponent, fromComponent } from 'observe-component/kefir';
 
 const ObservableInput = observeComponent('onChange')('input');
 
