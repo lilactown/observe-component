@@ -7,7 +7,7 @@ You can now import it via:
 import { observeComponent, fromComponent } from 'observe-component/rxjs';
 
 // node-style require
-const { observeComponent, fromComponenet } = require('observe-component/rxjs');
+const { observeComponent, fromComponent } = require('observe-component/rxjs');
 ```
 
 # 3.1.0
