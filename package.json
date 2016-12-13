@@ -1,6 +1,6 @@
 {
   "name": "observe-component",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "Access React component events as functional reactive streams",
   "main": "index.js",
   "typings": "index",
