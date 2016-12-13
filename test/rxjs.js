@@ -1,10 +1,10 @@
 import React from 'react';
 import {createRenderer} from 'react-addons-test-utils';
 import assert from 'assert';
-import Rx from 'rx';
+import Rx from 'rxjs/Rx';
 
 
-describe('Rx (v4) module', function () {
+describe('RxJS (v5+) module', function () {
 	describe('observeComponent', function () {
 		const observeComponent = require('../rx').observeComponent;
 		const shallowRenderer = createRenderer();
@@ -73,12 +73,12 @@ describe('Rx (v4) module', function () {
 
 		it('if an array is supplied to the second argument, filter event names by members of array', function () {
 			const __eventStream = Rx.Observable.create((observer) => {
-				observer.onNext({type: 'onEvent1'});
-				observer.onNext({type: 'onEvent2'});
-				observer.onNext({type: 'onEvent2'});
-				observer.onNext({type: 'onEvent3'});
-				observer.onNext({type: 'onEvent4'});
-				observer.onCompleted();
+				observer.next({type: 'onEvent1'});
+				observer.next({type: 'onEvent2'});
+				observer.next({type: 'onEvent2'});
+				observer.next({type: 'onEvent3'});
+				observer.next({type: 'onEvent4'});
+				observer.complete();
 			});
 			const obj = { __eventStream };
 

@@ -32,7 +32,8 @@
   "homepage": "https://github.com/Lokeh/observe-component#readme",
   "peerDependencies": {
     "kefir": "^3.2.0",
-    "rx": "^4.0.8"
+    "rx": "^4.0.8",
+    "rxjs": "^5.0.1"
   },
   "devDependencies": {
     "@types/react": "^0.14.54",
@@ -43,6 +44,7 @@
     "mocha": "^2.4.5",
     "react-addons-test-utils": "^15.4.1",
     "react-dom": "^15.4.1",
+    "rxjs": "^5.0.1",
     "sinon": "^1.17.3",
     "typescript": "^2.1.4"
   },

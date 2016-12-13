@@ -1,3 +1,4 @@
 import * as Kefir from './kefir';
 import * as Rx from './rx';
-export { Kefir, Rx };
+import * as RxJS from './rxjs';
+export { Kefir, Rx, RxJS };
