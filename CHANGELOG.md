@@ -1,6 +1,7 @@
 # 3.2.0
 
 Add RxJS v5 (stable) support: https://github.com/ReactiveX/rxjs/blob/master/CHANGELOG.md#501-2016-12-13
+
 You can now import it via:
 ```javascript
 import { observeComponent, fromComponent } from 'observe-component/rxjs';
