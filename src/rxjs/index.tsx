@@ -24,7 +24,7 @@ export function observeComponent<P>(...events: string[]): ComponentFactory<P> {
 			function createHandler(type: string): (event) => void {
 				return function handler(event: any) {
 					props[type] && props[type](event);
-					onNext(new ComponentEvent(type, event));
+					onNext(new ComponentEvent(type, event, props));
 				};
 			}
 			const eventHandlers = createEventHandlers(events, createHandler);
