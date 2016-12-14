@@ -1,9 +1,9 @@
 node_modules
 npm-debug.log
 .vscode
-rx/
-rxjs/
-kefir/
-common/
+rxjs
+rxjs
+kefir
+common
 index.js
 index.d.ts
