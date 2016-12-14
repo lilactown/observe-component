@@ -1,3 +1,10 @@
 node_modules
 npm-debug.log
 .vscode
+/rx
+/rxjs
+/kefir
+/common
+/index.js
+/index.js.map
+/index.d.ts
