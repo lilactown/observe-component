@@ -189,7 +189,7 @@ fromComponent(ObservableLi)
 
 ```
 
-[examples/list](Example here)
+[Example here](examples/list)
 
 ### You can observable any kind of component
 
