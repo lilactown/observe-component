@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { render } from 'react-dom';
-import { observeComponent, fromComponent } from '../../../kefir';
+import { observeComponent, fromComponent } from '../../../rxjs';
 
 const Button = observeComponent('onClick')('button');
 const clickStream = fromComponent(Button);
@@ -16,8 +16,9 @@ function App(props) {
 clickStream
 	// scan passes the previous value as the first argument
 	// to it's predicate. We initialize it with `false` (off).
-	.scan((p) => !p, false)
+	.scan((p, _) => !p, false)
+	.startWith(false)
 	.map((x) => x ? "On" : "Off")
-	.onValue((text) =>
+	.subscribe((text) =>
 		render(<App text={text} />, document.getElementById('app'))
 	);
