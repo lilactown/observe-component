@@ -1,5 +1,8 @@
 .babelrc
 src/
+test/
 build.sh
 .eslintrc
 tsconfig.json
+examples/
+.vscode/
