@@ -41,14 +41,17 @@
     "babel-preset-es2015": "^6.5.0",
     "babel-preset-react": "^6.5.0",
     "babel-register": "^6.5.2",
+    "kefir": "^3.6.1",
     "mocha": "^2.4.5",
     "react-addons-test-utils": "^15.4.1",
     "react-dom": "^15.4.1",
+    "rx": "^4.1.0",
     "rxjs": "^5.0.1",
     "sinon": "^1.17.3",
     "typescript": "^2.1.4"
   },
   "dependencies": {
+    "@types/core-js": "^0.9.35",
     "react": "^15.4.1"
   }
 }
