@@ -189,6 +189,8 @@ fromComponent(ObservableLi)
 
 ```
 
+[examples/list](Example here)
+
 ### You can observable any kind of component
 
 ...as long as you pass event handlers to the appropriately. The library simply passes special handlers to React's event system (`on<Event>`) to abstract them into observables.
