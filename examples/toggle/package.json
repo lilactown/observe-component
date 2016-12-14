@@ -1,0 +1,13 @@
+{
+  "name": "toggle",
+  "version": "1.0.0",
+  "description": "A simple example using observe-component to control a toggle",
+  "main": "index.js",
+  "author": "Will Acton",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
+    "rxjs": "^5.0.1"
+  }
+}

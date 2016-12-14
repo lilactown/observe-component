@@ -1,6 +1,6 @@
-import React from 'react';
-import {render} from 'react-dom';
-import {observeComponent, fromComponent} from 'observe-component';
+import * as React from 'react';
+import { render } from 'react-dom';
+import { observeComponent, fromComponent } from '../../../kefir';
 
 const Button = observeComponent('onClick')('button');
 const clickStream = fromComponent(Button);
@@ -19,5 +19,5 @@ clickStream
 	.scan((p) => !p, false)
 	.map((x) => x ? "On" : "Off")
 	.onValue((text) =>
-		render(<App { text } />, document.getElementById('app'))
+		render(<App text={text} />, document.getElementById('app'))
 	);
