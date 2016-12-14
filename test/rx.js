@@ -35,7 +35,7 @@ describe('Rx (v4) module', function () {
 			const result = shallowRenderer.getRenderOutput();
 
 			ObservableComponent.__eventStream.subscribe((e) => 
-				assert.deepEqual(e, { type: 'onClick', value: 'test event' }, "onClick")
+				assert.deepEqual(e, { type: 'onClick', value: 'test event', props: {} }, "onClick")
 			);
 			result.props.onClick('test event');
 		});
@@ -48,12 +48,12 @@ describe('Rx (v4) module', function () {
 			ObservableComponent.__eventStream
 				.filter((e) => e.type === "onClick")
 				.subscribe((e) => 
-					assert.deepEqual(e, { type: 'onClick', value: 'test event' }, "onClick")
+					assert.deepEqual(e, { type: 'onClick', value: 'test event', props: {} }, "onClick")
 				);
 			ObservableComponent.__eventStream
 				.filter((e) => e.type === "onChange")
 				.subscribe((e) =>
-					assert.deepEqual(e, { type: 'onChange', value: 'test event2' }, "onChange")
+					assert.deepEqual(e, { type: 'onChange', value: 'test event2', props: {} }, "onChange")
 				);
 
 			result.props.onClick('test event');

@@ -1,0 +1,2 @@
+export declare function adaptObserveComponent<Subject, Observable>(adapter: AdapterDefinition<Subject, Observable>): <P>(...events: string[]) => (Component: Component) => ObservableComponent<P, Observable>;
+export declare function adaptFromComponent<Subject, Observable>(adapter: AdapterDefinition<Subject, Observable>): (observableComponent: ObservableComponent<any, Observable>, ...filters: string[]) => Observable;
