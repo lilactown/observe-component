@@ -1,6 +1,6 @@
 {
   "name": "observe-component",
-  "version": "3.3.0",
+  "version": "3.3.1",
   "description": "Access React component events as functional reactive streams",
   "main": "index.js",
   "types": "./src/common.d.ts",
