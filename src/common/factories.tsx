@@ -2,6 +2,20 @@ import * as React from 'react';
 import {createEventHandlers} from './createEventHandlers';
 import {ComponentEvent} from './ComponentEvent';
 
+export interface ObservableComponent<P, O> extends React.StatelessComponent<P> {
+    __eventStream: O;
+};
+
+export type Component = React.ComponentClass<any> | React.StatelessComponent<any> | string;
+
+export interface AdapterDefinition<Subject, Observable> {
+    subjectFactory: () => Subject,
+    emit: (subject: Subject, v: any) => void,
+    toObservable: (subject: Subject) => Observable,
+    filter: (observable: Observable, predicate: (v: any) => boolean) => Observable,
+};
+
+
 function getDisplayName(Component: Component) {
     if (typeof Component === "string") {
         return Component;

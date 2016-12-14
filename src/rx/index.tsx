@@ -1,6 +1,12 @@
 import * as Rx from 'rx';
 import { ComponentEvent } from '../common/ComponentEvent';
-import { adaptObserveComponent, adaptFromComponent } from '../common/factories';
+import {
+	adaptObserveComponent,
+	adaptFromComponent,
+	ObservableComponent,
+	Component,
+	AdapterDefinition,
+} from '../common/factories';
 
 export interface ObservableComponent<P, O> extends React.StatelessComponent<P> {
     __eventStream: O;
@@ -15,10 +21,10 @@ const adapter: AdapterDefinition<Rx.Subject<ComponentEvent>, Rx.Observable<Compo
 	filter: (observable, predicate) => observable.filter(predicate),
 };
 
-export const observeComponent:
-	<P>(...events: string[]) => (Component: Component) => ObservableComponent<P, Rx.Observable<ComponentEvent>> =
-	adaptObserveComponent<Rx.Subject<ComponentEvent>, Rx.Observable<ComponentEvent>>(adapter);
-
 export const fromComponent:
 	(observableComponent: ObservableComponent<any, Rx.Observable<ComponentEvent>>, ...filters: string[]) => Rx.Observable<ComponentEvent> =
 	adaptFromComponent(adapter);
+
+export const observeComponent:
+	<P>(...events: string[]) => (Component: Component) => ObservableComponent<P, Rx.Observable<ComponentEvent>> =
+	adaptObserveComponent<Rx.Subject<ComponentEvent>, Rx.Observable<ComponentEvent>>(adapter);

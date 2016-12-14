@@ -1,6 +1,12 @@
 import * as Kefir from 'kefir';
 import { ComponentEvent } from '../common/ComponentEvent';
-import { adaptObserveComponent, adaptFromComponent } from '../common/factories';
+import {
+	adaptObserveComponent,
+	adaptFromComponent,
+	ObservableComponent,
+	Component,
+	AdapterDefinition,
+} from '../common/factories';
 
 export interface ObservableComponent<P, O> extends React.StatelessComponent<P> {
     __eventStream: O;
