@@ -1,53 +1,24 @@
-import * as React from 'react';
 import * as Rx from 'rx';
-import {createEventHandlers} from '../common/createEventHandlers';
-import {ComponentEvent} from '../common/ComponentEvent';
+import { ComponentEvent } from '../common/ComponentEvent';
+import { adaptObserveComponent, adaptFromComponent } from '../common/factories';
 
-export interface ObservableComponent<P> extends React.StatelessComponent<P> {
-    __eventStream: Rx.Observable<ComponentEvent>;
-};
+export interface ObservableComponent<P, O> extends React.StatelessComponent<P> {
+    __eventStream: O;
+}
 
 export type Component = React.ComponentClass<any> | React.StatelessComponent<any> | string
-export type ComponentFactory<P> = (Component: Component) => ObservableComponent<P>;
 
-// observeComponent :: String[] -> Component -> ObservableComponent
-export function observeComponent<P>(...events: string[]): ComponentFactory<P> {
-	return function observableComponentFactory(
-		Component: Component
-	): ObservableComponent<P> {
-		const __eventSubject: Rx.Subject<any> = new Rx.Subject();
-		function onNext(event: ComponentEvent) {
-			__eventSubject.onNext(event);
-		}
+const adapter: AdapterDefinition<Rx.Subject<ComponentEvent>, Rx.Observable<ComponentEvent>> = {
+	subjectFactory: () => new Rx.Subject<ComponentEvent>(),
+	emit: (subject, v) => subject.onNext(v),
+	toObservable: (subject) => subject.asObservable(),
+	filter: (observable, predicate) => observable.filter(predicate),
+};
 
-		function HOC(props: any): JSX.Element {
-			function createHandler(type: string): (event) => void {
-				return function handler(event: any) {
-					props[type] && props[type](event);
-					onNext(new ComponentEvent(type, event, props));
-				};
-			}
-			const eventHandlers = createEventHandlers(events, createHandler);
+export const observeComponent:
+	<P>(...events: string[]) => (Component: Component) => ObservableComponent<P, Rx.Observable<ComponentEvent>> =
+	adaptObserveComponent<Rx.Subject<ComponentEvent>, Rx.Observable<ComponentEvent>>(adapter);
 
-			// return React.createElement(Component, {...props, ...eventHandlers})
-			return (<Component {...props} {...eventHandlers} />);
-		};
-		
-		(HOC as ObservableComponent<P>).__eventStream = __eventSubject.asObservable(); // return Observable
-
-		return (HOC as ObservableComponent<P>);
-	};
-}
-
-// fromComponent :: ObservableComponent -> String[] -> Observable
-export function fromComponent(
-	observableComponent: ObservableComponent<any>,
-	...filters: string[]
-): Rx.Observable<any> {
-	if (filters && filters.length) {
-		return observableComponent
-			.__eventStream
-			.filter(({ type }): boolean => filters.indexOf(type) > -1);
-	}
-	return observableComponent.__eventStream;
-}
+export const fromComponent:
+	(observableComponent: ObservableComponent<any, Rx.Observable<ComponentEvent>>, ...filters: string[]) => Rx.Observable<ComponentEvent> =
+	adaptFromComponent(adapter);
