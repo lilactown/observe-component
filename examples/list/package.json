@@ -1,0 +1,27 @@
+{
+  "name": "list",
+  "version": "1.0.0",
+  "description": "A simple example using observe-component to control a list",
+  "main": "index.js",
+  "author": "Will Acton",
+  "license": "MIT",
+  "scripts": {
+    "start": "webpack-dev-server --content-base www/",
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
+    "rxjs": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "^0.14.55",
+    "@types/react-dom": "^0.14.19",
+    "awesome-typescript-loader": "^3.0.0-beta.17",
+    "source-map-loader": "^0.1.5",
+    "typescript": "^2.1.4",
+    "webpack": "^1.14.0",
+    "webpack-dev-server": "^1.16.2"
+  }
+}
