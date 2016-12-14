@@ -2,6 +2,13 @@ import * as React from 'react';
 import {createEventHandlers} from './createEventHandlers';
 import {ComponentEvent} from './ComponentEvent';
 
+function getDisplayName(Component: Component) {
+    if (typeof Component === "string") {
+        return Component;
+    }
+    return Component.displayName;
+}
+
 export function adaptObserveComponent<Subject, Observable>(adapter: AdapterDefinition<Subject, Observable>) {
     return function observeComponent<P>(...events: string[]): (Component: Component) => ObservableComponent<P, Observable> {
         return function observableComponentFactory(
@@ -23,6 +30,7 @@ export function adaptObserveComponent<Subject, Observable>(adapter: AdapterDefin
             };
             
             (HOC as ObservableComponent<P, Observable>).__eventStream = adapter.toObservable(__eventSubject); // return Observable
+            (HOC as ObservableComponent<P, Observable>).displayName = `Observable(${getDisplayName(Component)})`;
 
             return (HOC as ObservableComponent<P, Observable>);
         };
