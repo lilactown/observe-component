@@ -62,9 +62,10 @@ fromComponent(ObservableDiv, 'onMouseUp').log();
 
 #### `ComponentEvent`
 
-The `ComponentEvent` object contains two properties:
+The `ComponentEvent` object contains three properties:
 - `type` : a string which identifies the event that has occurred, e.g.: 'onClick', 'onScroll'
 - `value` : typically the React library `SyntheticEvent` (see: [Event System](https://facebook.github.io/react/docs/events.html))
+- `props` : the props of the observed component at event trigger 
 
 ## But why?
 
@@ -138,18 +139,19 @@ function MyApp(props) {
 	return (
 		<div>
 			<div>Hello {this.props.name}!</div>
-			<ObservableInput type="text" />
+			<ObservableInput type="text" value={props.name} />
 		</div>
 	);
 }
 
 const nameObservable =
 	fromComponent(ObservableInput)
-	/* The observables values contain two properties:
+	/* The observables values contain three properties:
 		'type': The type of the event that was triggered, e.g. 'onChange'
 		'value': The React library `SyntheticEvent`
+		'props': the current props on the component
 	*/
-	.map(({type, value}) => value.target.value);
+	.map(({ value }) => value.target.value);
 
 nameObservable
 	.onValue((name) => 
@@ -158,8 +160,38 @@ nameObservable
 
 ```
 
+### Dynamic lists
+
+```javascript
+const ObservableItem = observeComponent('onClick')('li');
+
+function MyList(props) {
+	return (
+        <div>
+            <span>Selected: { currentName }</span>
+            <ul style={styles.ul}>
+                {['John', 'Will', 'Marie'].map((name) => 
+                    <ObservableLi key={name}>
+                        { name }
+                    </ObservableLi>
+                )}
+            </ul>
+        </div>
+	);
+}
+
+fromComponent(ObservableLi)
+    .map((ev) => ev.props.children)
+    .startWith('John')
+    .subscribe((name) => {
+        render(<App currentName={name} />, document.getElementById('app'));
+    });
+
+```
+
 ### You can observable any kind of component
-...as long as you pass event handlers to the appropriate elements. The library simply passes special handlers to React's event system (`on<Event>`) to abstract them into observables.
+
+...as long as you pass event handlers to the appropriately. The library simply passes special handlers to React's event system (`on<Event>`) to abstract them into observables.
 
 ```javascript
 class MyWidget extends React.Component {
