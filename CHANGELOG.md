@@ -1,3 +1,9 @@
+# 3.3.0
+
+Added `props` to `ComponentEvent`.
+
+Refactoring of core functions to allow future extensions for other observable libraries.
+
 # 3.2.0
 
 Add RxJS v5 (stable) support: https://github.com/ReactiveX/rxjs/blob/master/CHANGELOG.md#501-2016-12-13

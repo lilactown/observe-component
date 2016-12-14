@@ -89,7 +89,7 @@ const clickObservable =
 clickObservable
 	.onValue((e) => console.log(e));
 
-// => ComponentEvent { type: 'onClick', value: SyntheticEvent }
+// => ComponentEvent { type: 'onClick', value: SyntheticEvent, props: {} }
 ```
 
 ```javascript
@@ -104,7 +104,7 @@ const clickObservable =
 clickObservable
 	.subscribe((e) => console.log(e));
 
-// => ComponentEvent { type: 'onClick', value: SyntheticEvent }
+// => ComponentEvent { type: 'onClick', value: SyntheticEvent, props: {} }
 ```
 
 ```javascript
@@ -119,7 +119,7 @@ const clickObservable =
 clickObservable
 	.subscribe((e) => console.log(e));
 
-// => ComponentEvent { type: 'onClick', value: SyntheticEvent }
+// => ComponentEvent { type: 'onClick', value: SyntheticEvent, props: {} }
 ```
 
 ## Examples
