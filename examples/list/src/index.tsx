@@ -43,8 +43,9 @@ const styles = {
 };
 
 fromComponent(ObservableLi)
-    .map((ev) => ev.props.children)
-    .startWith('John')
+    .map((ev) => ev.props.children) // reduce event to app state
+    .startWith('John') // initialize our app with some state
     .subscribe((name) => {
+        // render our app with each change in state
         render(<App currentName={name} />, document.getElementById('app'));
     });
