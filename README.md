@@ -43,7 +43,7 @@ Example:
 const ObservableDiv = observeComponent('onMouseDown', 'onMouseUp')('div');
 ```
 
-#### `fromComponent(observeComponent, ...events)`
+#### `fromComponent(ObservableComponent, ...events)`
 Returns the observable attached to the `ObservableComponent`. Optional string `event` parameters can be supplied to return a observable only containing those events.
 
 fromComponent observables emit a `ComponentEvent` object.
@@ -171,9 +171,9 @@ function MyList(props) {
             <span>Selected: { currentName }</span>
             <ul style={styles.ul}>
                 {['John', 'Will', 'Marie'].map((name) => 
-                    <ObservableLi key={name}>
+                    <ObservableItem key={name}>
                         { name }
-                    </ObservableLi>
+                    </ObservableItem>
                 )}
             </ul>
         </div>
@@ -191,9 +191,9 @@ fromComponent(ObservableLi)
 
 [Example here](examples/list)
 
-### You can observable any kind of component
+### You can observe events from any kind of component
 
-...as long as you pass event handlers to the appropriately. The library simply passes special handlers to React's event system (`on<Event>`) to abstract them into observables.
+...as long as you handle events appropriately. The library simply passes special handlers to React's event system (`on<Event>`) to abstract them into observables.
 
 ```javascript
 class MyWidget extends React.Component {
